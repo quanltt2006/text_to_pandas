@@ -1,5 +1,68 @@
+# Dependencies
 node_modules/
-.next/
+.pnp
+.pnp.js
+
+# Frontend build
 dist/
 build/
+coverage/
+.next/
+out/
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+venv/
+env/
+ENV/
+.venv
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.pytype/
+htmlcov/
+.coverage
+*.egg-info/
+
+# Data
+data/
+*.db
+*.sqlite
+*.sqlite3
+
+# Environment & secrets
+.env
+.env.local
+.env.*.local
+!.env.example
+
+# Logs
+logs/
 *.log
+serv_log.txt
+serv_err.txt
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+*.orig
+
+# OS
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Misc
+*.tmp
+*.bak
+*.pid
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
