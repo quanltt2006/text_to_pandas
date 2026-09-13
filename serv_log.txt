@@ -271,3 +271,103 @@ Terminate batch job (Y/N)?
 [BACKEND] 2026-09-13 22:17:34 | INFO     | app.services.sandbox_executor:execute - Executing code in sandbox
 [BACKEND] 2026-09-13 22:17:34 | INFO     | app.services.sandbox_executor:execute - Code executed successfully. Output length: 80
 [BACKEND] INFO:     127.0.0.1:51223 - "POST /api/chat/5ea8c987-6eb0-4aed-9e7d-b5b5a66cee3a HTTP/1.1" 200 OK
+[BACKEND] 2026-09-13 22:46:04 | INFO     | app.api.upload:upload_csv - Uploading file: priors_seed0_fold0.csv
+[BACKEND] 2026-09-13 22:46:04 | INFO     | app.api.upload:upload_csv - File saved: ./data/uploads\fe356d37-c2af-4a4d-ae85-6942ffa9ff42.csv
+[BACKEND] 2026-09-13 22:46:05 | INFO     | app.services.csv_loader:validate - CSV validated: 10 columns
+[BACKEND] 2026-09-13 22:46:05 | INFO     | app.services.profiler:profile_dataset - Profiling dataset: ./data/uploads\fe356d37-c2af-4a4d-ae85-6942ffa9ff42.csv
+[BACKEND] 2026-09-13 22:46:05 | INFO     | app.services.csv_loader:load_pandas - Loading CSV with pandas: fe356d37-c2af-4a4d-ae85-6942ffa9ff42.csv
+[BACKEND] 2026-09-13 22:46:05 | INFO     | app.services.csv_loader:load_pandas - Loaded 764 rows, 10 columns
+[BACKEND] 2026-09-13 22:46:05 | INFO     | app.services.profiler:profile_dataset - Profiled: 764 rows, 10 columns
+[BACKEND] 2026-09-13 22:46:07 | INFO     | app.services.embedding_store:__init__ - ChromaDB initialized at ./data/chroma
+[BACKEND] 2026-09-13 22:46:07 | INFO     | app.services.embedding_store:embed_schema - Embedding schema for dataset: fe356d37-c2af-4a4d-ae85-6942ffa9ff42
+[BACKEND] 2026-09-13 22:46:08 | INFO     | app.services.embedding_store:embed_schema - Embedded 11 documents for dataset fe356d37-c2af-4a4d-ae85-6942ffa9ff42
+[BACKEND] 2026-09-13 22:46:08 | INFO     | app.api.upload:upload_csv - Dataset uploaded and processed: fe356d37-c2af-4a4d-ae85-6942ffa9ff42
+[BACKEND] INFO:     127.0.0.1:55112 - "POST /api/upload HTTP/1.1" 200 OK
+[BACKEND] INFO:     127.0.0.1:55112 - "OPTIONS /api/chat/fe356d37-c2af-4a4d-ae85-6942ffa9ff42 HTTP/1.1" 200 OK
+[BACKEND] 2026-09-13 22:46:13 | INFO     | app.api.chat:chat - Chat request for dataset fe356d37-c2af-4a4d-ae85-6942ffa9ff42: Dataset này nói về gì?...
+[BACKEND] 2026-09-13 22:46:13 | INFO     | app.services.router:route_with_embeddings - QuestionRouter: embedding -> rag (score=1.000, margin=0.484)
+[BACKEND] 2026-09-13 22:46:13 | INFO     | app.api.chat:chat - Routed to: rag
+[BACKEND] 2026-09-13 22:46:13 | INFO     | app.services.embedding_store:query - Querying RAG for dataset fe356d37-c2af-4a4d-ae85-6942ffa9ff42: Dataset này nói về gì?...
+[BACKEND] 2026-09-13 22:46:13 | INFO     | app.services.embedding_store:query - Found 3 relevant documents
+[BACKEND] INFO:     127.0.0.1:55112 - "POST /api/chat/fe356d37-c2af-4a4d-ae85-6942ffa9ff42 HTTP/1.1" 200 OK
+[BACKEND] 2026-09-13 22:49:37 | INFO     | app.api.upload:upload_csv - Uploading file: data_availability_summary.csv
+[BACKEND] 2026-09-13 22:49:37 | INFO     | app.api.upload:upload_csv - File saved: ./data/uploads\7e229ee5-cbd8-444e-9deb-f86a01c3f758.csv
+[BACKEND] 2026-09-13 22:49:37 | INFO     | app.services.csv_loader:validate - CSV validated: 4 columns
+[BACKEND] 2026-09-13 22:49:37 | INFO     | app.services.profiler:profile_dataset - Profiling dataset: ./data/uploads\7e229ee5-cbd8-444e-9deb-f86a01c3f758.csv
+[BACKEND] 2026-09-13 22:49:37 | INFO     | app.services.csv_loader:load_pandas - Loading CSV with pandas: 7e229ee5-cbd8-444e-9deb-f86a01c3f758.csv
+[BACKEND] 2026-09-13 22:49:37 | INFO     | app.services.csv_loader:load_pandas - Loaded 26 rows, 4 columns
+[BACKEND] 2026-09-13 22:49:37 | INFO     | app.services.profiler:profile_dataset - Profiled: 26 rows, 4 columns
+[BACKEND] 2026-09-13 22:49:39 | INFO     | app.services.embedding_store:__init__ - ChromaDB initialized at ./data/chroma
+[BACKEND] 2026-09-13 22:49:39 | INFO     | app.services.embedding_store:embed_schema - Embedding schema for dataset: 7e229ee5-cbd8-444e-9deb-f86a01c3f758
+[BACKEND] 2026-09-13 22:49:40 | INFO     | app.services.embedding_store:embed_schema - Embedded 5 documents for dataset 7e229ee5-cbd8-444e-9deb-f86a01c3f758
+[BACKEND] 2026-09-13 22:49:40 | INFO     | app.api.upload:upload_csv - Dataset uploaded and processed: 7e229ee5-cbd8-444e-9deb-f86a01c3f758
+[BACKEND] INFO:     127.0.0.1:58055 - "POST /api/upload HTTP/1.1" 200 OK
+[BACKEND] 2026-09-13 22:53:25 | INFO     | app.api.upload:upload_csv - Uploading file: NHẬN XÉT HỌC TẬP - Bi - Anh 7.csv
+[BACKEND] 2026-09-13 22:53:25 | INFO     | app.api.upload:upload_csv - File saved: ./data/uploads\e27ea77f-d7ef-4903-b53b-e47ae322cc1a.csv
+[BACKEND] 2026-09-13 22:53:25 | INFO     | app.services.csv_loader:validate - CSV validated: 3 columns
+[BACKEND] 2026-09-13 22:53:25 | INFO     | app.services.profiler:profile_dataset - Profiling dataset: ./data/uploads\e27ea77f-d7ef-4903-b53b-e47ae322cc1a.csv
+[BACKEND] 2026-09-13 22:53:25 | INFO     | app.services.csv_loader:load_pandas - Loading CSV with pandas: e27ea77f-d7ef-4903-b53b-e47ae322cc1a.csv
+[BACKEND] 2026-09-13 22:53:25 | INFO     | app.services.csv_loader:load_pandas - Loaded 19 rows, 3 columns
+[BACKEND] 2026-09-13 22:53:25 | INFO     | app.services.profiler:profile_dataset - Profiled: 19 rows, 3 columns
+[BACKEND] 2026-09-13 22:53:27 | INFO     | app.services.embedding_store:__init__ - ChromaDB initialized at ./data/chroma
+[BACKEND] 2026-09-13 22:53:27 | INFO     | app.services.embedding_store:embed_schema - Embedding schema for dataset: e27ea77f-d7ef-4903-b53b-e47ae322cc1a
+[BACKEND] 2026-09-13 22:53:27 | INFO     | app.services.embedding_store:embed_schema - Embedded 4 documents for dataset e27ea77f-d7ef-4903-b53b-e47ae322cc1a
+[BACKEND] 2026-09-13 22:53:27 | INFO     | app.api.upload:upload_csv - Dataset uploaded and processed: e27ea77f-d7ef-4903-b53b-e47ae322cc1a
+[BACKEND] INFO:     127.0.0.1:65518 - "POST /api/upload HTTP/1.1" 200 OK
+[BACKEND] INFO:     127.0.0.1:57892 - "OPTIONS /api/chat/e27ea77f-d7ef-4903-b53b-e47ae322cc1a HTTP/1.1" 200 OK
+[BACKEND] 2026-09-13 22:53:45 | INFO     | app.api.chat:chat - Chat request for dataset e27ea77f-d7ef-4903-b53b-e47ae322cc1a: Dataset này nói về gì?...
+[BACKEND] 2026-09-13 22:53:46 | INFO     | app.services.router:route_with_embeddings - QuestionRouter: embedding -> rag (score=1.000, margin=0.484)
+[BACKEND] 2026-09-13 22:53:46 | INFO     | app.api.chat:chat - Routed to: rag
+[BACKEND] 2026-09-13 22:53:46 | INFO     | app.services.embedding_store:query - Querying RAG for dataset e27ea77f-d7ef-4903-b53b-e47ae322cc1a: Dataset này nói về gì?...
+[BACKEND] 2026-09-13 22:53:46 | INFO     | app.services.embedding_store:query - Found 3 relevant documents
+[BACKEND] INFO:     127.0.0.1:57892 - "POST /api/chat/e27ea77f-d7ef-4903-b53b-e47ae322cc1a HTTP/1.1" 200 OK
+[BACKEND] 2026-09-13 22:54:23 | INFO     | app.api.chat:chat - Chat request for dataset e27ea77f-d7ef-4903-b53b-e47ae322cc1a: đã dạy được bao nhiêu buổi...
+[BACKEND] 2026-09-13 22:54:24 | INFO     | app.services.router:route_with_embeddings - QuestionRouter: embedding -> code-gen (score=0.779, margin=0.119)
+[BACKEND] 2026-09-13 22:54:24 | INFO     | app.api.chat:chat - Routed to: code-gen
+[BACKEND] 2026-09-13 22:54:24 | INFO     | app.services.text_to_pandas:generate_code - Generating code for: đã dạy được bao nhiêu buổi...
+[BACKEND] 2026-09-13 22:54:25 | INFO     | app.services.text_to_pandas:generate_code - Generated code: result = df.shape[0]
+[BACKEND] print(f"Số buổi đã dạy: {result}")...
+[BACKEND] 2026-09-13 22:54:25 | INFO     | app.services.csv_loader:load_pandas - Loading CSV with pandas: e27ea77f-d7ef-4903-b53b-e47ae322cc1a.csv
+[BACKEND] 2026-09-13 22:54:25 | INFO     | app.services.csv_loader:load_pandas - Loaded 19 rows, 3 columns
+[BACKEND] 2026-09-13 22:54:25 | INFO     | app.services.sandbox_executor:execute - Executing code in sandbox
+[BACKEND] 2026-09-13 22:54:25 | INFO     | app.services.sandbox_executor:execute - Code executed successfully. Output length: 19
+[BACKEND] INFO:     127.0.0.1:54414 - "POST /api/chat/e27ea77f-d7ef-4903-b53b-e47ae322cc1a HTTP/1.1" 200 OK
+[BACKEND] 2026-09-13 22:59:51 | INFO     | app.api.upload:upload_csv - Uploading file: priors_seed1_fold3.csv
+[BACKEND] 2026-09-13 22:59:51 | INFO     | app.api.upload:upload_csv - File saved: ./data/uploads\c904fb28-d488-4c03-b43c-d08bb798f62b.csv
+[BACKEND] 2026-09-13 22:59:51 | INFO     | app.services.csv_loader:validate - CSV validated: 10 columns
+[BACKEND] 2026-09-13 22:59:51 | INFO     | app.services.profiler:profile_dataset - Profiling dataset: ./data/uploads\c904fb28-d488-4c03-b43c-d08bb798f62b.csv
+[BACKEND] 2026-09-13 22:59:51 | INFO     | app.services.csv_loader:load_pandas - Loading CSV with pandas: c904fb28-d488-4c03-b43c-d08bb798f62b.csv
+[BACKEND] 2026-09-13 22:59:51 | INFO     | app.services.csv_loader:load_pandas - Loaded 764 rows, 10 columns
+[BACKEND] 2026-09-13 22:59:51 | INFO     | app.services.profiler:profile_dataset - Profiled: 764 rows, 10 columns
+[BACKEND] 2026-09-13 22:59:53 | INFO     | app.services.embedding_store:__init__ - ChromaDB initialized at ./data/chroma
+[BACKEND] 2026-09-13 22:59:53 | INFO     | app.services.embedding_store:embed_schema - Embedding schema for dataset: c904fb28-d488-4c03-b43c-d08bb798f62b
+[BACKEND] 2026-09-13 22:59:54 | INFO     | app.services.embedding_store:embed_schema - Embedded 11 documents for dataset c904fb28-d488-4c03-b43c-d08bb798f62b
+[BACKEND] 2026-09-13 22:59:54 | INFO     | app.api.upload:upload_csv - Dataset uploaded and processed: c904fb28-d488-4c03-b43c-d08bb798f62b
+[BACKEND] INFO:     127.0.0.1:64011 - "POST /api/upload HTTP/1.1" 200 OK
+[BACKEND] 2026-09-13 23:00:43 | INFO     | app.api.upload:upload_csv - Uploading file: priors_seed2_fold0.csv
+[BACKEND] 2026-09-13 23:00:43 | INFO     | app.api.upload:upload_csv - File saved: ./data/uploads\1ed795b4-30e2-4ac6-8f5a-dd064c07996a.csv
+[BACKEND] 2026-09-13 23:00:43 | INFO     | app.services.csv_loader:validate - CSV validated: 10 columns
+[BACKEND] 2026-09-13 23:00:43 | INFO     | app.services.profiler:profile_dataset - Profiling dataset: ./data/uploads\1ed795b4-30e2-4ac6-8f5a-dd064c07996a.csv
+[BACKEND] 2026-09-13 23:00:43 | INFO     | app.services.csv_loader:load_pandas - Loading CSV with pandas: 1ed795b4-30e2-4ac6-8f5a-dd064c07996a.csv
+[BACKEND] 2026-09-13 23:00:43 | INFO     | app.services.csv_loader:load_pandas - Loaded 764 rows, 10 columns
+[BACKEND] 2026-09-13 23:00:43 | INFO     | app.services.profiler:profile_dataset - Profiled: 764 rows, 10 columns
+[BACKEND] 2026-09-13 23:00:46 | INFO     | app.services.embedding_store:__init__ - ChromaDB initialized at ./data/chroma
+[BACKEND] 2026-09-13 23:00:46 | INFO     | app.services.embedding_store:embed_schema - Embedding schema for dataset: 1ed795b4-30e2-4ac6-8f5a-dd064c07996a
+[BACKEND] 2026-09-13 23:00:46 | INFO     | app.services.embedding_store:embed_schema - Embedded 11 documents for dataset 1ed795b4-30e2-4ac6-8f5a-dd064c07996a
+[BACKEND] 2026-09-13 23:00:46 | INFO     | app.api.upload:upload_csv - Dataset uploaded and processed: 1ed795b4-30e2-4ac6-8f5a-dd064c07996a
+[BACKEND] INFO:     127.0.0.1:55405 - "POST /api/upload HTTP/1.1" 200 OK
+[BACKEND] 2026-09-13 23:01:16 | INFO     | app.api.upload:upload_csv - Uploading file: priors_seed2_fold0.csv
+[BACKEND] 2026-09-13 23:01:16 | INFO     | app.api.upload:upload_csv - File saved: ./data/uploads\849d8171-ac56-4f66-8dff-ab5603c2e369.csv
+[BACKEND] 2026-09-13 23:01:16 | INFO     | app.services.csv_loader:validate - CSV validated: 10 columns
+[BACKEND] 2026-09-13 23:01:16 | INFO     | app.services.profiler:profile_dataset - Profiling dataset: ./data/uploads\849d8171-ac56-4f66-8dff-ab5603c2e369.csv
+[BACKEND] 2026-09-13 23:01:16 | INFO     | app.services.csv_loader:load_pandas - Loading CSV with pandas: 849d8171-ac56-4f66-8dff-ab5603c2e369.csv
+[BACKEND] 2026-09-13 23:01:16 | INFO     | app.services.csv_loader:load_pandas - Loaded 764 rows, 10 columns
+[BACKEND] 2026-09-13 23:01:16 | INFO     | app.services.profiler:profile_dataset - Profiled: 764 rows, 10 columns
+[BACKEND] 2026-09-13 23:01:21 | INFO     | app.services.embedding_store:__init__ - ChromaDB initialized at ./data/chroma
+[BACKEND] 2026-09-13 23:01:21 | INFO     | app.services.embedding_store:embed_schema - Embedding schema for dataset: 849d8171-ac56-4f66-8dff-ab5603c2e369
+[BACKEND] 2026-09-13 23:01:21 | INFO     | app.services.embedding_store:embed_schema - Embedded 11 documents for dataset 849d8171-ac56-4f66-8dff-ab5603c2e369
+[BACKEND] 2026-09-13 23:01:21 | INFO     | app.api.upload:upload_csv - Dataset uploaded and processed: 849d8171-ac56-4f66-8dff-ab5603c2e369
+[BACKEND] INFO:     127.0.0.1:61814 - "POST /api/upload HTTP/1.1" 200 OK
+[BACKEND] INFO:     127.0.0.1:57900 - "GET /docs HTTP/1.1" 200 OK
+[BACKEND] INFO:     127.0.0.1:57900 - "GET /openapi.json HTTP/1.1" 200 OK
+[BACKEND] npm run dev:backend exited with code 1

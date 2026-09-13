@@ -1,6 +1,9 @@
 import { ChatMessage, ColumnProfile, DatasetProfile } from '../types';
 
-const API_BASE = import.meta.env.VITE_API_BASE || 'http://localhost:8000/api';
+// Dev: gọi /api -> Vite proxy tới localhost:8000
+// Prod: đặt VITE_API_BASE=https://<backend>.onrender.com/api trên Render static site,
+// nếu không đặt thì dùng cùng domain (/api) cho trường hợp deploy 1 service.
+const API_BASE = import.meta.env.VITE_API_BASE || '/api';
 
 interface BackendColumnProfile {
   name: string;
