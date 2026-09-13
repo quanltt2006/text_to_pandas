@@ -1,0 +1,273 @@
+
+> dev:all
+> concurrently -n BACKEND,FRONTEND -c blue,magenta "npm run dev:backend" "npm run dev"
+
+[BACKEND] 
+[BACKEND] > dev:backend
+[BACKEND] > cd backend & ..\.venv\Scripts\python.exe -m uvicorn app.main:app --reload --port 8000
+[BACKEND] 
+[FRONTEND] 
+[FRONTEND] > dev
+[FRONTEND] > vite
+[FRONTEND] 
+[BACKEND] INFO:     Will watch for changes in these directories: ['D:\\2026\\text_to_pandas\\backend']
+[BACKEND] INFO:     Uvicorn running on http://127.0.0.1:8000 (Press CTRL+C to quit)
+[BACKEND] INFO:     Started reloader process [35264] using WatchFiles
+[FRONTEND] 
+[FRONTEND]   [32m[1mVITE[22m v6.4.3[39m  [2mready in [0m[1m689[22m[2m[0m ms[22m
+[FRONTEND] 
+[FRONTEND]   [32m➜[39m  [1mLocal[22m:   [36mhttp://localhost:[1m3000[22m/[39m
+[FRONTEND]   [32m➜[39m  [1mNetwork[22m: [36mhttp://192.168.1.9:[1m3000[22m/[39m
+[BACKEND] 2026-09-13 21:41:33.123 | INFO     | app.services.embedding_store:__init__:18 - ChromaDB initialized at ./data/chroma
+[BACKEND] INFO:     Started server process [26248]
+[BACKEND] 2026-09-13 21:41:33 | INFO     | app.main:startup_event - Starting Smart CSV Analyst API...
+[BACKEND] INFO:     Waiting for application startup.
+[BACKEND] 2026-09-13 21:41:33 | INFO     | app.main:startup_event - Database initialized
+[BACKEND] INFO:     Application startup complete.
+[BACKEND] 2026-09-13 21:41:33 | INFO     | app.main:startup_event - LLM Provider: groq
+[BACKEND] 2026-09-13 21:41:33 | INFO     | app.main:startup_event - Max file size: 50MB
+[FRONTEND] npm run dev exited with code 4294967295
+[BACKEND] 2026-09-13 21:51:07 | INFO     | app.api.upload:upload_csv - Uploading file: predictions_dx_new_seed0_fold0.csv
+[BACKEND] 2026-09-13 21:51:07 | INFO     | app.api.upload:upload_csv - File saved: ./data/uploads\adf0c31d-4156-40b7-ac18-09db9fe7ab0f.csv
+[BACKEND] 2026-09-13 21:51:07 | INFO     | app.services.csv_loader:validate - CSV validated: 8 columns
+[BACKEND] 2026-09-13 21:51:07 | INFO     | app.services.profiler:profile_dataset - Profiling dataset: ./data/uploads\adf0c31d-4156-40b7-ac18-09db9fe7ab0f.csv
+[BACKEND] 2026-09-13 21:51:07 | INFO     | app.services.csv_loader:load_pandas - Loading CSV with pandas: adf0c31d-4156-40b7-ac18-09db9fe7ab0f.csv
+[BACKEND] 2026-09-13 21:51:07 | INFO     | app.services.csv_loader:load_pandas - Loaded 779 rows, 8 columns
+[BACKEND] 2026-09-13 21:51:07 | INFO     | app.services.profiler:profile_dataset - Profiled: 779 rows, 8 columns
+[BACKEND] 2026-09-13 21:51:10 | INFO     | app.services.embedding_store:__init__ - ChromaDB initialized at ./data/chroma
+[BACKEND] 2026-09-13 21:51:10 | INFO     | app.services.embedding_store:embed_schema - Embedding schema for dataset: adf0c31d-4156-40b7-ac18-09db9fe7ab0f
+[BACKEND] 2026-09-13 21:51:11 | INFO     | app.services.embedding_store:embed_schema - Embedded 9 documents for dataset adf0c31d-4156-40b7-ac18-09db9fe7ab0f
+[BACKEND] 2026-09-13 21:51:11 | INFO     | app.api.upload:upload_csv - Dataset uploaded and processed: adf0c31d-4156-40b7-ac18-09db9fe7ab0f
+[BACKEND] INFO:     127.0.0.1:59527 - "POST /api/upload HTTP/1.1" 200 OK
+[BACKEND] INFO:     127.0.0.1:60430 - "OPTIONS /api/chat/adf0c31d-4156-40b7-ac18-09db9fe7ab0f HTTP/1.1" 200 OK
+[BACKEND] 2026-09-13 21:51:19 | INFO     | app.api.chat:chat - Chat request for dataset adf0c31d-4156-40b7-ac18-09db9fe7ab0f: trung bình logit các mẫu được dự đoán là 0...
+[BACKEND] 2026-09-13 21:51:19 | INFO     | app.api.chat:chat - Routed to: code-gen
+[BACKEND] 2026-09-13 21:51:19 | INFO     | app.services.text_to_pandas:generate_code - Generating code for: trung bình logit các mẫu được dự đoán là 0...
+[BACKEND] 2026-09-13 21:51:20 | INFO     | app.services.text_to_pandas:generate_code - Generated code: result = df.loc[df['y_pred'] == 0, 'logit_AD'].mean()
+[BACKEND] print(f"Average logit_AD for predictions = 0: ...
+[BACKEND] 2026-09-13 21:51:20 | INFO     | app.services.csv_loader:load_pandas - Loading CSV with pandas: adf0c31d-4156-40b7-ac18-09db9fe7ab0f.csv
+[BACKEND] 2026-09-13 21:51:20 | INFO     | app.services.csv_loader:load_pandas - Loaded 779 rows, 8 columns
+[BACKEND] 2026-09-13 21:51:20 | INFO     | app.services.sandbox_executor:execute - Executing code in sandbox
+[BACKEND] 2026-09-13 21:51:20 | INFO     | app.services.sandbox_executor:execute - Code executed successfully. Output length: 58
+[BACKEND] INFO:     127.0.0.1:60430 - "POST /api/chat/adf0c31d-4156-40b7-ac18-09db9fe7ab0f HTTP/1.1" 200 OK
+[BACKEND] 2026-09-13 21:51:56 | INFO     | app.api.chat:chat - Chat request for dataset adf0c31d-4156-40b7-ac18-09db9fe7ab0f: bao nhiễu mẫu bị dự đoán sai , làm thành bảng...
+[BACKEND] 2026-09-13 21:51:56 | INFO     | app.api.chat:chat - Routed to: general
+[BACKEND] INFO:     127.0.0.1:61852 - "POST /api/chat/adf0c31d-4156-40b7-ac18-09db9fe7ab0f HTTP/1.1" 200 OK
+[BACKEND] 2026-09-13 21:52:06 | INFO     | app.api.chat:chat - Chat request for dataset adf0c31d-4156-40b7-ac18-09db9fe7ab0f: bao nhiễu mẫu bị dự đoán sai , làm thành bảng...
+[BACKEND] 2026-09-13 21:52:06 | INFO     | app.api.chat:chat - Routed to: general
+[BACKEND] INFO:     127.0.0.1:54752 - "POST /api/chat/adf0c31d-4156-40b7-ac18-09db9fe7ab0f HTTP/1.1" 200 OK
+[BACKEND] 2026-09-13 21:52:18 | INFO     | app.api.chat:chat - Chat request for dataset adf0c31d-4156-40b7-ac18-09db9fe7ab0f: bao nhiễu mẫu bị dự đoán sai...
+[BACKEND] 2026-09-13 21:52:18 | INFO     | app.api.chat:chat - Routed to: general
+[BACKEND] INFO:     127.0.0.1:52612 - "POST /api/chat/adf0c31d-4156-40b7-ac18-09db9fe7ab0f HTTP/1.1" 200 OK
+[BACKEND] 2026-09-13 21:52:39 | INFO     | app.api.chat:chat - Chat request for dataset 550a101e-550b-4a24-91f0-ec05d69b52ec: bao nhiễu mẫu bị dự đoán sai ...
+[BACKEND] 2026-09-13 21:52:39 | INFO     | app.api.chat:chat - Routed to: general
+[BACKEND] INFO:     127.0.0.1:60680 - "POST /api/chat/550a101e-550b-4a24-91f0-ec05d69b52ec HTTP/1.1" 200 OK
+[BACKEND] 2026-09-13 21:52:57 | INFO     | app.api.chat:chat - Chat request for dataset 550a101e-550b-4a24-91f0-ec05d69b52ec: bao nhiễu mẫu bị dự đoán sai ...
+[BACKEND] 2026-09-13 21:52:57 | INFO     | app.api.chat:chat - Routed to: general
+[BACKEND] INFO:     127.0.0.1:61062 - "POST /api/chat/550a101e-550b-4a24-91f0-ec05d69b52ec HTTP/1.1" 200 OK
+[BACKEND] 2026-09-13 21:53:59 | INFO     | app.api.chat:chat - Chat request for dataset adf0c31d-4156-40b7-ac18-09db9fe7ab0f: Dataset này nói về gì?...
+[BACKEND] 2026-09-13 21:53:59 | INFO     | app.api.chat:chat - Routed to: rag
+[BACKEND] 2026-09-13 21:53:59 | INFO     | app.services.embedding_store:query - Querying RAG for dataset adf0c31d-4156-40b7-ac18-09db9fe7ab0f: Dataset này nói về gì?...
+[BACKEND] 2026-09-13 21:53:59 | INFO     | app.services.embedding_store:query - Found 3 relevant documents
+[BACKEND] INFO:     127.0.0.1:59226 - "POST /api/chat/adf0c31d-4156-40b7-ac18-09db9fe7ab0f HTTP/1.1" 200 OK
+[BACKEND] WARNING:  WatchFiles detected changes in 'app\services\router.py'. Reloading...
+[BACKEND]  INFO:     127.0.0.1:65257 - "GET / HTTP/1.1" 200 OK
+[BACKEND] INFO:     127.0.0.1:65257 - "GET /favicon.ico HTTP/1.1" 404 Not Found
+[BACKEND] INFO:     127.0.0.1:65257 - "GET /docs HTTP/1.1" 200 OK
+[BACKEND] INFO:     127.0.0.1:65257 - "GET /openapi.json HTTP/1.1" 200 OK
+[BACKEND] 2026-09-13 22:02:16 | INFO     | app.api.upload:upload_csv - Uploading file: predictions_dx_new_seed0_fold0.csv
+[BACKEND] 2026-09-13 22:02:16 | INFO     | app.api.upload:upload_csv - File saved: ./data/uploads\a350f652-3459-4654-a579-e261665fde2c.csv
+[BACKEND] 2026-09-13 22:02:16 | INFO     | app.services.csv_loader:validate - CSV validated: 8 columns
+[BACKEND] 2026-09-13 22:02:16 | INFO     | app.services.profiler:profile_dataset - Profiling dataset: ./data/uploads\a350f652-3459-4654-a579-e261665fde2c.csv
+[BACKEND] 2026-09-13 22:02:16 | INFO     | app.services.csv_loader:load_pandas - Loading CSV with pandas: a350f652-3459-4654-a579-e261665fde2c.csv
+[BACKEND] 2026-09-13 22:02:16 | INFO     | app.services.csv_loader:load_pandas - Loaded 779 rows, 8 columns
+[BACKEND] 2026-09-13 22:02:16 | INFO     | app.services.profiler:profile_dataset - Profiled: 779 rows, 8 columns
+Terminate batch job (Y/N)? 
+[BACKEND] Terminate batch job (Y/N)? INFO:     Shutting down
+[BACKEND] 2026-09-13 22:02:19 | INFO     | app.services.embedding_store:__init__ - ChromaDB initialized at ./data/chroma
+[BACKEND] 2026-09-13 22:02:19 | INFO     | app.services.embedding_store:embed_schema - Embedding schema for dataset: a350f652-3459-4654-a579-e261665fde2c
+[BACKEND] 2026-09-13 22:02:20 | INFO     | app.services.embedding_store:embed_schema - Embedded 9 documents for dataset a350f652-3459-4654-a579-e261665fde2c
+[BACKEND] 2026-09-13 22:02:20 | INFO     | app.api.upload:upload_csv - Dataset uploaded and processed: a350f652-3459-4654-a579-e261665fde2c
+[BACKEND] INFO:     127.0.0.1:63557 - "POST /api/upload HTTP/1.1" 200 OK
+[BACKEND] INFO:     Waiting for background tasks to complete. (CTRL+C to force quit)
+[BACKEND] INFO:     Waiting for application shutdown.
+[BACKEND] 2026-09-13 22:02:20 | INFO     | app.main:shutdown_event - Shutting down Smart CSV Analyst API...
+[BACKEND] INFO:     Application shutdown complete.
+[BACKEND] INFO:     Finished server process [26248]
+[BACKEND] WARNING:  WatchFiles detected changes in 'app\core\config.py', 'app\api\chat.py', 'app\services\router.py'. Reloading...
+[BACKEND]  2026-09-13 22:02:25.987 | INFO     | app.services.router:_init_embedder:87 - QuestionRouter: embedding models loaded
+[BACKEND] 2026-09-13 22:02:26.382 | INFO     | app.services.embedding_store:__init__:18 - ChromaDB initialized at ./data/chroma
+[BACKEND] INFO:     Started server process [27760]
+[BACKEND] 2026-09-13 22:02:26 | INFO     | app.main:startup_event - Starting Smart CSV Analyst API...
+[BACKEND] INFO:     Waiting for application startup.
+[BACKEND] 2026-09-13 22:02:26 | INFO     | app.main:startup_event - Database initialized
+[BACKEND] 2026-09-13 22:02:26 | INFO     | app.main:startup_event - LLM Provider: groq
+[BACKEND] 2026-09-13 22:02:26 | INFO     | app.main:startup_event - Max file size: 50MB
+[BACKEND] INFO:     Application startup complete.
+[BACKEND] INFO:     Shutting down
+[BACKEND] INFO:     Waiting for application shutdown.
+[BACKEND] 2026-09-13 22:02:26 | INFO     | app.main:shutdown_event - Shutting down Smart CSV Analyst API...
+[BACKEND] INFO:     Application shutdown complete.
+[BACKEND] INFO:     Finished server process [27760]
+[BACKEND] 2026-09-13 22:02:32.199 | INFO     | app.services.router:_init_embedder:87 - QuestionRouter: embedding models loaded
+[BACKEND] 2026-09-13 22:02:32.593 | INFO     | app.services.embedding_store:__init__:18 - ChromaDB initialized at ./data/chroma
+[BACKEND] INFO:     Started server process [2168]
+[BACKEND] 2026-09-13 22:02:32 | INFO     | app.main:startup_event - Starting Smart CSV Analyst API...
+[BACKEND] INFO:     Waiting for application startup.
+[BACKEND] 2026-09-13 22:02:32 | INFO     | app.main:startup_event - Database initialized
+[BACKEND] 2026-09-13 22:02:32 | INFO     | app.main:startup_event - LLM Provider: groq
+[BACKEND] 2026-09-13 22:02:32 | INFO     | app.main:startup_event - Max file size: 50MB
+[BACKEND] INFO:     Application startup complete.
+[BACKEND] INFO:     127.0.0.1:52499 - "GET /api/chat/a350f652-3459-4654-a579-e261665fde2c/history HTTP/1.1" 200 OK
+[BACKEND] 2026-09-13 22:03:06 | INFO     | app.api.chat:chat - Chat request for dataset a350f652-3459-4654-a579-e261665fde2c: Có bao nhiêu mẫu bị dự đoán sai thống kê các loại...
+[BACKEND] 2026-09-13 22:03:06 | INFO     | app.services.router:route_with_embeddings - QuestionRouter: embedding -> code-gen (score=0.830, margin=0.132)
+[BACKEND] 2026-09-13 22:03:06 | INFO     | app.api.chat:chat - Routed to: code-gen
+[BACKEND] 2026-09-13 22:03:06 | INFO     | app.services.text_to_pandas:generate_code - Generating code for: Có bao nhiêu mẫu bị dự đoán sai thống kê các loại...
+[BACKEND] 2026-09-13 22:03:08 | INFO     | app.services.text_to_pandas:generate_code - Generated code: # Ensure relevant columns are numeric and drop rows with missing values in them
+[BACKEND] cols = ['y_true', 'y...
+[BACKEND] 2026-09-13 22:03:08 | INFO     | app.services.csv_loader:load_pandas - Loading CSV with pandas: a350f652-3459-4654-a579-e261665fde2c.csv
+[BACKEND] 2026-09-13 22:03:08 | INFO     | app.services.csv_loader:load_pandas - Loaded 779 rows, 8 columns
+[BACKEND] 2026-09-13 22:03:08 | INFO     | app.services.sandbox_executor:execute - Executing code in sandbox
+[BACKEND] 2026-09-13 22:03:08 | INFO     | app.services.sandbox_executor:execute - Code executed successfully. Output length: 136
+[BACKEND] INFO:     127.0.0.1:65151 - "POST /api/chat/a350f652-3459-4654-a579-e261665fde2c HTTP/1.1" 200 OK
+[BACKEND] 2026-09-13 22:03:24 | INFO     | app.api.chat:chat - Chat request for dataset a350f652-3459-4654-a579-e261665fde2c: Có bao nhiêu mẫu bị dự đoán sai ...
+[BACKEND] 2026-09-13 22:03:24 | INFO     | app.services.router:route_with_embeddings - QuestionRouter: embedding -> code-gen (score=0.942, margin=0.268)
+[BACKEND] 2026-09-13 22:03:24 | INFO     | app.api.chat:chat - Routed to: code-gen
+[BACKEND] 2026-09-13 22:03:24 | INFO     | app.services.text_to_pandas:generate_code - Generating code for: Có bao nhiêu mẫu bị dự đoán sai ...
+[BACKEND] 2026-09-13 22:03:25 | INFO     | app.services.text_to_pandas:generate_code - Generated code: # Drop rows with missing true or predicted labels
+[BACKEND] df_clean = df.dropna(subset=['y_true', 'y_pred'])
+[BACKEND] ...
+[BACKEND] 2026-09-13 22:03:25 | INFO     | app.services.csv_loader:load_pandas - Loading CSV with pandas: a350f652-3459-4654-a579-e261665fde2c.csv
+[BACKEND] 2026-09-13 22:03:25 | INFO     | app.services.csv_loader:load_pandas - Loaded 779 rows, 8 columns
+[BACKEND] 2026-09-13 22:03:25 | INFO     | app.services.sandbox_executor:execute - Executing code in sandbox
+[BACKEND] 2026-09-13 22:03:25 | INFO     | app.services.sandbox_executor:execute - Code executed successfully. Output length: 24
+[BACKEND] INFO:     127.0.0.1:59378 - "POST /api/chat/a350f652-3459-4654-a579-e261665fde2c HTTP/1.1" 200 OK
+[BACKEND] 2026-09-13 22:05:54 | INFO     | app.api.chat:chat - Chat request for dataset a350f652-3459-4654-a579-e261665fde2c: bao nhiêu mẫu 0 bị dự đoán thành 1 và ngược lại...
+[BACKEND] 2026-09-13 22:05:54 | INFO     | app.services.router:route_with_embeddings - QuestionRouter: embedding -> code-gen (score=0.856, margin=0.167)
+[BACKEND] 2026-09-13 22:05:54 | INFO     | app.api.chat:chat - Routed to: code-gen
+[BACKEND] 2026-09-13 22:05:54 | INFO     | app.services.text_to_pandas:generate_code - Generating code for: bao nhiêu mẫu 0 bị dự đoán thành 1 và ngược lại...
+[BACKEND] 2026-09-13 22:05:55 | INFO     | app.services.text_to_pandas:generate_code - Generated code: # Ensure binary columns are numeric and handle missing values
+[BACKEND] mask = df[['y_true', 'y_pred']].notna(...
+[BACKEND] 2026-09-13 22:05:55 | INFO     | app.services.csv_loader:load_pandas - Loading CSV with pandas: a350f652-3459-4654-a579-e261665fde2c.csv
+[BACKEND] 2026-09-13 22:05:55 | INFO     | app.services.csv_loader:load_pandas - Loaded 779 rows, 8 columns
+[BACKEND] 2026-09-13 22:05:55 | INFO     | app.services.sandbox_executor:execute - Executing code in sandbox
+[BACKEND] 2026-09-13 22:05:55 | INFO     | app.services.sandbox_executor:execute - Code executed successfully. Output length: 127
+[BACKEND] INFO:     127.0.0.1:54349 - "POST /api/chat/a350f652-3459-4654-a579-e261665fde2c HTTP/1.1" 200 OK
+[BACKEND] 2026-09-13 22:06:34 | INFO     | app.api.chat:chat - Chat request for dataset a350f652-3459-4654-a579-e261665fde2c: bao nhiêu mẫu 0 bị dự đoán thành 1 và ngược lại, t...
+[BACKEND] 2026-09-13 22:06:34 | INFO     | app.services.router:route_with_embeddings - QuestionRouter: embedding -> code-gen (score=0.853, margin=0.190)
+[BACKEND] 2026-09-13 22:06:34 | INFO     | app.api.chat:chat - Routed to: code-gen
+[BACKEND] 2026-09-13 22:06:34 | INFO     | app.services.text_to_pandas:generate_code - Generating code for: bao nhiêu mẫu 0 bị dự đoán thành 1 và ngược lại, t...
+[BACKEND] 2026-09-13 22:06:36 | INFO     | app.services.text_to_pandas:generate_code - Generated code: df_clean = df[['y_true', 'y_pred']].dropna()
+[BACKEND] confusion = (
+[BACKEND]     pd.crosstab(df_clean['y_true'], df_cl...
+[BACKEND] 2026-09-13 22:06:36 | INFO     | app.services.csv_loader:load_pandas - Loading CSV with pandas: a350f652-3459-4654-a579-e261665fde2c.csv
+[BACKEND] 2026-09-13 22:06:36 | INFO     | app.services.csv_loader:load_pandas - Loaded 779 rows, 8 columns
+[BACKEND] 2026-09-13 22:06:36 | INFO     | app.services.sandbox_executor:execute - Executing code in sandbox
+[BACKEND] 2026-09-13 22:06:36 | INFO     | app.services.sandbox_executor:execute - Code executed successfully. Output length: 80
+[BACKEND] INFO:     127.0.0.1:57198 - "POST /api/chat/a350f652-3459-4654-a579-e261665fde2c HTTP/1.1" 200 OK
+[BACKEND] 2026-09-13 22:06:46 | INFO     | app.api.upload:upload_csv - Uploading file: predictions_dx_new_seed0_fold0.csv
+[BACKEND] 2026-09-13 22:06:46 | INFO     | app.api.upload:upload_csv - File saved: ./data/uploads\505f1b13-85e7-4e59-a796-6c41d76861f7.csv
+[BACKEND] 2026-09-13 22:06:46 | INFO     | app.services.csv_loader:validate - CSV validated: 8 columns
+[BACKEND] 2026-09-13 22:06:46 | INFO     | app.services.profiler:profile_dataset - Profiling dataset: ./data/uploads\505f1b13-85e7-4e59-a796-6c41d76861f7.csv
+[BACKEND] 2026-09-13 22:06:46 | INFO     | app.services.csv_loader:load_pandas - Loading CSV with pandas: 505f1b13-85e7-4e59-a796-6c41d76861f7.csv
+[BACKEND] 2026-09-13 22:06:46 | INFO     | app.services.csv_loader:load_pandas - Loaded 779 rows, 8 columns
+[BACKEND] 2026-09-13 22:06:46 | INFO     | app.services.profiler:profile_dataset - Profiled: 779 rows, 8 columns
+[BACKEND] 2026-09-13 22:06:49 | INFO     | app.services.embedding_store:__init__ - ChromaDB initialized at ./data/chroma
+[BACKEND] 2026-09-13 22:06:49 | INFO     | app.services.embedding_store:embed_schema - Embedding schema for dataset: 505f1b13-85e7-4e59-a796-6c41d76861f7
+[BACKEND] 2026-09-13 22:06:49 | INFO     | app.services.embedding_store:embed_schema - Embedded 9 documents for dataset 505f1b13-85e7-4e59-a796-6c41d76861f7
+[BACKEND] 2026-09-13 22:06:49 | INFO     | app.api.upload:upload_csv - Dataset uploaded and processed: 505f1b13-85e7-4e59-a796-6c41d76861f7
+[BACKEND] INFO:     127.0.0.1:56649 - "POST /api/upload HTTP/1.1" 200 OK
+[BACKEND] INFO:     127.0.0.1:50205 - "OPTIONS /api/chat/505f1b13-85e7-4e59-a796-6c41d76861f7 HTTP/1.1" 200 OK
+[BACKEND] 2026-09-13 22:07:00 | INFO     | app.api.chat:chat - Chat request for dataset 505f1b13-85e7-4e59-a796-6c41d76861f7: bao nhiêu mẫu 0 bị dự đoán thành 1 và ngược lại, t...
+[BACKEND] 2026-09-13 22:07:00 | INFO     | app.services.router:route_with_embeddings - QuestionRouter: embedding -> code-gen (score=0.853, margin=0.190)
+[BACKEND] 2026-09-13 22:07:00 | INFO     | app.api.chat:chat - Routed to: code-gen
+[BACKEND] 2026-09-13 22:07:00 | INFO     | app.services.text_to_pandas:generate_code - Generating code for: bao nhiêu mẫu 0 bị dự đoán thành 1 và ngược lại, t...
+[BACKEND] 2026-09-13 22:07:02 | INFO     | app.services.text_to_pandas:generate_code - Generated code: import pandas as pd
+[BACKEND] 
+[BACKEND] confusion = pd.crosstab(
+[BACKEND]     df['y_true'].fillna(-1).astype(int),
+[BACKEND]     df['y_pre...
+[BACKEND] 2026-09-13 22:07:02 | INFO     | app.services.csv_loader:load_pandas - Loading CSV with pandas: 505f1b13-85e7-4e59-a796-6c41d76861f7.csv
+[BACKEND] 2026-09-13 22:07:02 | INFO     | app.services.csv_loader:load_pandas - Loaded 779 rows, 8 columns
+[BACKEND] 2026-09-13 22:07:02 | INFO     | app.services.sandbox_executor:execute - Executing code in sandbox
+[BACKEND] 2026-09-13 22:07:02 | INFO     | app.services.sandbox_executor:execute - Code executed successfully. Output length: 80
+[BACKEND] INFO:     127.0.0.1:50205 - "POST /api/chat/505f1b13-85e7-4e59-a796-6c41d76861f7 HTTP/1.1" 200 OK
+[BACKEND] WARNING:  WatchFiles detected changes in 'app\services\sandbox_executor.py'. Reloading...
+[BACKEND]  INFO:     Shutting down
+[BACKEND] INFO:     Waiting for application shutdown.
+[BACKEND] 2026-09-13 22:12:27 | INFO     | app.main:shutdown_event - Shutting down Smart CSV Analyst API...
+[BACKEND] INFO:     Application shutdown complete.
+[BACKEND] INFO:     Finished server process [2168]
+[BACKEND] 2026-09-13 22:12:32.049 | INFO     | app.services.router:_init_embedder:87 - QuestionRouter: embedding models loaded
+[BACKEND] 2026-09-13 22:12:32.415 | INFO     | app.services.embedding_store:__init__:18 - ChromaDB initialized at ./data/chroma
+[BACKEND] INFO:     Started server process [3712]
+[BACKEND] 2026-09-13 22:12:32 | INFO     | app.main:startup_event - Starting Smart CSV Analyst API...
+[BACKEND] INFO:     Waiting for application startup.
+[BACKEND] 2026-09-13 22:12:32 | INFO     | app.main:startup_event - Database initialized
+[BACKEND] 2026-09-13 22:12:32 | INFO     | app.main:startup_event - LLM Provider: groq
+[BACKEND] 2026-09-13 22:12:32 | INFO     | app.main:startup_event - Max file size: 50MB
+[BACKEND] INFO:     Application startup complete.
+[BACKEND] 2026-09-13 22:14:39 | INFO     | app.api.upload:upload_csv - Uploading file: predictions_dx_new_seed0_fold0.csv
+[BACKEND] 2026-09-13 22:14:39 | INFO     | app.api.upload:upload_csv - File saved: ./data/uploads\5ea8c987-6eb0-4aed-9e7d-b5b5a66cee3a.csv
+[BACKEND] 2026-09-13 22:14:39 | INFO     | app.services.csv_loader:validate - CSV validated: 8 columns
+[BACKEND] 2026-09-13 22:14:39 | INFO     | app.services.profiler:profile_dataset - Profiling dataset: ./data/uploads\5ea8c987-6eb0-4aed-9e7d-b5b5a66cee3a.csv
+[BACKEND] 2026-09-13 22:14:39 | INFO     | app.services.csv_loader:load_pandas - Loading CSV with pandas: 5ea8c987-6eb0-4aed-9e7d-b5b5a66cee3a.csv
+[BACKEND] 2026-09-13 22:14:39 | INFO     | app.services.csv_loader:load_pandas - Loaded 779 rows, 8 columns
+[BACKEND] 2026-09-13 22:14:39 | INFO     | app.services.profiler:profile_dataset - Profiled: 779 rows, 8 columns
+[BACKEND] 2026-09-13 22:14:41 | INFO     | app.services.embedding_store:__init__ - ChromaDB initialized at ./data/chroma
+[BACKEND] 2026-09-13 22:14:41 | INFO     | app.services.embedding_store:embed_schema - Embedding schema for dataset: 5ea8c987-6eb0-4aed-9e7d-b5b5a66cee3a
+[BACKEND] 2026-09-13 22:14:42 | INFO     | app.services.embedding_store:embed_schema - Embedded 9 documents for dataset 5ea8c987-6eb0-4aed-9e7d-b5b5a66cee3a
+[BACKEND] 2026-09-13 22:14:42 | INFO     | app.api.upload:upload_csv - Dataset uploaded and processed: 5ea8c987-6eb0-4aed-9e7d-b5b5a66cee3a
+[BACKEND] INFO:     127.0.0.1:62536 - "POST /api/upload HTTP/1.1" 200 OK
+[BACKEND] INFO:     127.0.0.1:60288 - "OPTIONS /api/chat/5ea8c987-6eb0-4aed-9e7d-b5b5a66cee3a HTTP/1.1" 200 OK
+[BACKEND] 2026-09-13 22:14:56 | INFO     | app.api.chat:chat - Chat request for dataset 5ea8c987-6eb0-4aed-9e7d-b5b5a66cee3a: thống kê các mẫu bị dự đoán sai...
+[BACKEND] 2026-09-13 22:14:57 | INFO     | app.services.router:route_with_embeddings - QuestionRouter: embedding -> code-gen (score=0.736, margin=0.063)
+[BACKEND] 2026-09-13 22:14:57 | INFO     | app.api.chat:chat - Routed to: code-gen
+[BACKEND] 2026-09-13 22:14:57 | INFO     | app.services.text_to_pandas:generate_code - Generating code for: thống kê các mẫu bị dự đoán sai...
+[BACKEND] 2026-09-13 22:14:58 | INFO     | app.services.text_to_pandas:generate_code - Generated code: # Filter rows where the prediction does not match the true label
+[BACKEND] mis_df = df.dropna(subset=['y_true'...
+[BACKEND] 2026-09-13 22:14:58 | INFO     | app.services.csv_loader:load_pandas - Loading CSV with pandas: 5ea8c987-6eb0-4aed-9e7d-b5b5a66cee3a.csv
+[BACKEND] 2026-09-13 22:14:58 | INFO     | app.services.csv_loader:load_pandas - Loaded 779 rows, 8 columns
+[BACKEND] 2026-09-13 22:14:58 | INFO     | app.services.sandbox_executor:execute - Executing code in sandbox
+[BACKEND] 2026-09-13 22:14:58 | INFO     | app.services.sandbox_executor:execute - Code executed successfully. Output length: 791
+[BACKEND] INFO:     127.0.0.1:60288 - "POST /api/chat/5ea8c987-6eb0-4aed-9e7d-b5b5a66cee3a HTTP/1.1" 200 OK
+[BACKEND] 2026-09-13 22:15:40 | INFO     | app.api.chat:chat - Chat request for dataset 5ea8c987-6eb0-4aed-9e7d-b5b5a66cee3a: thống kê các mẫu bị dự đoán sai số lượng thôi...
+[BACKEND] 2026-09-13 22:15:41 | INFO     | app.services.router:route_with_embeddings - QuestionRouter: embedding -> code-gen (score=0.723, margin=0.084)
+[BACKEND] 2026-09-13 22:15:41 | INFO     | app.api.chat:chat - Routed to: code-gen
+[BACKEND] 2026-09-13 22:15:41 | INFO     | app.services.text_to_pandas:generate_code - Generating code for: thống kê các mẫu bị dự đoán sai số lượng thôi...
+[BACKEND] 2026-09-13 22:15:42 | INFO     | app.services.text_to_pandas:generate_code - Generated code: # Ensure no missing values in true/pred columns
+[BACKEND] df_clean = df.dropna(subset=['y_true', 'y_pred'])
+[BACKEND] 
+[BACKEND] #...
+[BACKEND] 2026-09-13 22:15:42 | INFO     | app.services.csv_loader:load_pandas - Loading CSV with pandas: 5ea8c987-6eb0-4aed-9e7d-b5b5a66cee3a.csv
+[BACKEND] 2026-09-13 22:15:42 | INFO     | app.services.csv_loader:load_pandas - Loaded 779 rows, 8 columns
+[BACKEND] 2026-09-13 22:15:42 | INFO     | app.services.sandbox_executor:execute - Executing code in sandbox
+[BACKEND] 2026-09-13 22:15:42 | INFO     | app.services.sandbox_executor:execute - Code executed successfully. Output length: 36
+[BACKEND] INFO:     127.0.0.1:53729 - "POST /api/chat/5ea8c987-6eb0-4aed-9e7d-b5b5a66cee3a HTTP/1.1" 200 OK
+[BACKEND] 2026-09-13 22:16:08 | INFO     | app.api.chat:chat - Chat request for dataset 5ea8c987-6eb0-4aed-9e7d-b5b5a66cee3a: vẽ confusion matrix...
+[BACKEND] 2026-09-13 22:16:08 | INFO     | app.services.router:route_with_embeddings - QuestionRouter: ambiguous {'code-gen': 0.206538587808609, 'rag': 0.2589578330516815, 'general': 0.13106279075145721}, asking LLM
+[BACKEND] 2026-09-13 22:16:08 | INFO     | app.services.router:route_with_llm - QuestionRouter: routing with LLM: vẽ confusion matrix...
+[BACKEND] 2026-09-13 22:16:08 | INFO     | app.api.chat:chat - Routed to: code-gen
+[BACKEND] 2026-09-13 22:16:08 | INFO     | app.services.text_to_pandas:generate_code - Generating code for: vẽ confusion matrix...
+[BACKEND] 2026-09-13 22:16:10 | INFO     | app.services.text_to_pandas:generate_code - Generated code: import pandas as pd
+[BACKEND] 
+[BACKEND] # Ensure no missing values in the relevant columns
+[BACKEND] df_clean = df[['y_true', 'y_...
+[BACKEND] 2026-09-13 22:16:10 | INFO     | app.services.csv_loader:load_pandas - Loading CSV with pandas: 5ea8c987-6eb0-4aed-9e7d-b5b5a66cee3a.csv
+[BACKEND] 2026-09-13 22:16:10 | INFO     | app.services.csv_loader:load_pandas - Loaded 779 rows, 8 columns
+[BACKEND] 2026-09-13 22:16:10 | INFO     | app.services.sandbox_executor:execute - Executing code in sandbox
+[BACKEND] 2026-09-13 22:16:10 | INFO     | app.services.sandbox_executor:execute - Code executed successfully. Output length: 80
+[BACKEND] INFO:     127.0.0.1:50060 - "POST /api/chat/5ea8c987-6eb0-4aed-9e7d-b5b5a66cee3a HTTP/1.1" 200 OK
+[BACKEND] 2026-09-13 22:17:33 | INFO     | app.api.chat:chat - Chat request for dataset 5ea8c987-6eb0-4aed-9e7d-b5b5a66cee3a: vẽ confusion matrix tạo thành bảng cho tôi...
+[BACKEND] 2026-09-13 22:17:33 | INFO     | app.services.router:route_with_embeddings - QuestionRouter: embedding -> code-gen (score=0.441, margin=0.058)
+[BACKEND] 2026-09-13 22:17:33 | INFO     | app.api.chat:chat - Routed to: code-gen
+[BACKEND] 2026-09-13 22:17:33 | INFO     | app.services.text_to_pandas:generate_code - Generating code for: vẽ confusion matrix tạo thành bảng cho tôi...
+[BACKEND] 2026-09-13 22:17:34 | INFO     | app.services.text_to_pandas:generate_code - Generated code: import pandas as pd
+[BACKEND] 
+[BACKEND] # Remove rows with missing true or predicted labels
+[BACKEND] df_clean = df.dropna(subset...
+[BACKEND] 2026-09-13 22:17:34 | INFO     | app.services.csv_loader:load_pandas - Loading CSV with pandas: 5ea8c987-6eb0-4aed-9e7d-b5b5a66cee3a.csv
+[BACKEND] 2026-09-13 22:17:34 | INFO     | app.services.csv_loader:load_pandas - Loaded 779 rows, 8 columns
+[BACKEND] 2026-09-13 22:17:34 | INFO     | app.services.sandbox_executor:execute - Executing code in sandbox
+[BACKEND] 2026-09-13 22:17:34 | INFO     | app.services.sandbox_executor:execute - Code executed successfully. Output length: 80
+[BACKEND] INFO:     127.0.0.1:51223 - "POST /api/chat/5ea8c987-6eb0-4aed-9e7d-b5b5a66cee3a HTTP/1.1" 200 OK
