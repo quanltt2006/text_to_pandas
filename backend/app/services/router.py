@@ -1,18 +1,18 @@
-"""Router Service - Semantic question routing using embeddings + small LLM
+"""Router Service - semantic question routing using embeddings + small LLM
 
 Pipeline:
-1. Embed the user question and compare (cosine similarity) against a set of
-   prototype questions for each route (code-gen / rag / general). This is fast
-   and needs no LLM call.
+1. Embed the user question and compare (cosine similarity) against prototype
+   questions for each route (code-gen / rag / general). Fast, no LLM needed.
 2. If the best match is confident (above threshold + clear margin), return it.
 3. Otherwise ask a small LLM to disambiguate between the candidate routes.
-4. Hardcoded patterns are kept ONLY as a last-resort fallback when neither the
+4. Keyword patterns are kept ONLY as a last-resort fallback when neither the
    embedder nor the LLM is available.
 """
 from typing import Literal, List, Dict, Optional
 from loguru import logger
 
 from app.core.config import settings
+from app.services.embedder import embed_and_normalize, cosine_scores
 
 RoutingType = Literal["rag", "code-gen", "general"]
 
@@ -23,44 +23,48 @@ MARGIN_THRESHOLD = 0.02
 
 
 class QuestionRouter:
-    """Route questions to RAG or Code-gen based on semantic similarity + LLM"""
+    """Route questions to RAG or Code-gen based on semantic similarity + LLM."""
 
     ROUTE_PROTOTYPES: Dict[RoutingType, List[str]] = {
         "code-gen": [
-            "Bao nhiêu mẫu bị dự đoán sai?",
-            "Có bao nhiêu dòng thiếu dữ liệu?",
-            "Đếm số lượng đơn hàng theo tháng",
-            "Tính tổng doanh thu năm nay",
-            "Tính trung bình cột tuổi",
-            "Tìm giá trị lớn nhất trong cột giá",
-            "Top 10 khách hàng chi tiêu nhiều nhất",
-            "Xem tỷ lệ phần trăm đơn hàng hoàn thành",
-            "Lọc các bản ghi có giá trị null",
-            "So sánh doanh thu giữa các nhóm",
-            "Tính trung vị của cột điểm",
-            "Nhóm theo loại sản phẩm rồi đếm",
-            "Tính độ lệch chuẩn của cột lương",
-            "Đếm số bản ghi bị phân loại sai",
-            "Tìm các bản ghi trùng lặp",
+            "How many rows are mislabeled in the dataset?",
+            "How many rows are missing data?",
+            "Count the number of orders per month",
+            "Calculate the total revenue this year",
+            "Compute the average of the age column",
+            "Find the maximum value in the price column",
+            "Top 10 customers by total spend",
+            "What percentage of orders are completed?",
+            "Filter the rows that have null values",
+            "Compare revenue across groups",
+            "Compute the median of the score column",
+            "Group by product type and then count",
+            "Calculate the standard deviation of the salary column",
+            "Count the records that were classified incorrectly",
+            "Find the duplicate records",
+            "Show rows where rating is greater than 4",
+            "Sum the quantity column by category",
         ],
         "rag": [
-            "Cột này có ý nghĩa gì?",
-            "Giải thích ý nghĩa cột default",
-            "Dataset này nói về gì?",
-            "Cột ngày sinh dùng để làm gì?",
-            "Mô tả field predicted",
-            "Tại sao dataset lại có cột này?",
-            "Thông tin về cột is_staff",
-            "Cột payment_type là gì?",
-            "Nguồn gốc dữ liệu từ đâu?",
+            "What does this column mean?",
+            "Explain the meaning of the default column",
+            "What is this dataset about?",
+            "What is the birth date column used for?",
+            "Describe the predicted field",
+            "Why does the dataset have this column?",
+            "Tell me about the is_staff column",
+            "What is the payment_type column?",
+            "Where does the data come from?",
+            "Describe the dataset schema",
         ],
         "general": [
-            "Xin chào",
-            "Bạn có thể làm gì?",
-            "Cảm ơn bạn",
-            "Chào buổi sáng",
-            "Hãy giới thiệu về bản thân bạn",
-            "Trợ giúp tôi",
+            "Hello",
+            "What can you do?",
+            "Thank you",
+            "Good morning",
+            "Introduce yourself",
+            "Help me please",
+            "Goodbye",
         ],
     }
 
@@ -68,7 +72,6 @@ class QuestionRouter:
         self.provider = settings.LLM_PROVIDER
         self.client = None
         self.model = None
-        self._embed = None
         self._proto_vectors: Optional[dict] = None
         self._init_llm()
         self._init_embedder()
@@ -76,68 +79,51 @@ class QuestionRouter:
     # ---------- Embedding side ----------
 
     def _init_embedder(self):
-        """Initialize the local (offline) embedding function."""
+        """Pre-compute normalized prototype vectors from the embedder."""
         try:
-            from chromadb.utils.embedding_functions import DefaultEmbeddingFunction
-            self._embed = DefaultEmbeddingFunction()
-            # Pre-compute normalized prototype vectors once
             self._proto_vectors = {}
             for route, texts in self.ROUTE_PROTOTYPES.items():
-                self._proto_vectors[route] = self._normalize(self._embed(texts))
-            logger.info("QuestionRouter: embedding models loaded")
+                vectors = embed_and_normalize(texts)
+                if vectors is None:
+                    raise RuntimeError("embedder returned no vectors")
+                self._proto_vectors[route] = vectors
+            logger.info("QuestionRouter: embedding prototypes loaded")
         except Exception as e:
             logger.warning(f"QuestionRouter: embedder init failed, patterns will be used: {e}")
-            self._embed = None
             self._proto_vectors = None
-
-    @staticmethod
-    def _normalize(embeddings: List[list]) -> "object":
-        import numpy as np
-        arr = np.asarray(embeddings, dtype=np.float32)
-        norms = np.linalg.norm(arr, axis=1, keepdims=True)
-        norms[norms == 0] = 1.0
-        return arr / norms
-
-    def _embed_question(self, question: str) -> Optional["object"]:
-        if self._embed is None:
-            return None
-        try:
-            return self._normalize(self._embed([question]))[0]
-        except Exception as e:
-            logger.warning(f"QuestionRouter: failed to embed question: {e}")
-            return None
 
     def _score_routes(self, q_vec) -> Dict[RoutingType, float]:
         """Max cosine similarity of the question to each route's prototypes."""
         scores = {}
         for route, protos in self._proto_vectors.items():
-            scores[route] = float((protos @ q_vec).max())
+            scores[route] = float(cosine_scores(q_vec, protos).max())
         return scores
 
     def route_with_embeddings(self, question: str) -> RoutingType:
         """Route using embedding similarity only."""
-        q_vec = self._embed_question(question)
-        if q_vec is None:
+        q_vec = embed_and_normalize([question])
+        if q_vec is None or self._proto_vectors is None:
             return self.route_with_patterns(question)
 
-        scores = self._score_routes(q_vec)
+        scores = self._score_routes(q_vec[0])
         ranked = sorted(scores.items(), key=lambda kv: kv[1], reverse=True)
         best_route, best_score = ranked[0]
         second_score = ranked[1][1]
 
         if best_score >= SIM_THRESHOLD and (best_score - second_score) >= MARGIN_THRESHOLD:
-            logger.info(f"QuestionRouter: embedding -> {best_route} (score={best_score:.3f}, margin={best_score - second_score:.3f})")
+            logger.info(
+                f"QuestionRouter: embedding -> {best_route} "
+                f"(score={best_score:.3f}, margin={best_score - second_score:.3f})"
+            )
             return best_route
 
-        logger.info(
-            f"QuestionRouter: ambiguous {scores}, asking LLM"
-        )
+        logger.info(f"QuestionRouter: ambiguous {scores}, asking LLM")
         return self.route_with_llm(question, default=best_route)
 
     # ---------- LLM side ----------
 
     def _init_llm(self):
-        """Initialize small LLM client (groq / openai / anthropic)."""
+        """Initialize the small LLM client (groq / openai / anthropic)."""
         try:
             if self.provider == "groq":
                 from groq import Groq
@@ -158,12 +144,12 @@ class QuestionRouter:
     def route_with_llm(self, question: str, default: Optional[RoutingType] = None) -> RoutingType:
         """Ask a small LLM to classify the question into one of the three routes.
 
-        If the LLM is unavailable or returns an unusable (e.g. empty) answer,
-        fall back to ``default`` when provided, else to the pattern matcher.
+        If the LLM is unavailable or returns an unusable answer, fall back to
+        ``default`` when provided, else to the pattern matcher.
         """
         logger.info(f"QuestionRouter: routing with LLM: {question[:50]}...")
 
-        prompt = f"""Classify this user question into exactly one category:
+        prompt = """Classify this user question into exactly one category:
 
 - "code-gen": questions that need a data computation (statistics, count, filter, group, sum, top/bottom, ratio, predictions comparison...)
 - "rag": questions about the meaning, description, or context of the dataset or its columns
@@ -171,11 +157,11 @@ class QuestionRouter:
 
 Question: {question}
 
-Reply with ONLY the category name: code-gen, rag, or general."""
+Reply with ONLY the category name: code-gen, rag, or general.""".format(question=question)
 
         try:
             if self.client is None:
-                raise RuntimeError("LLM client chưa được cấu hình")
+                raise RuntimeError("LLM client is not configured")
             if self.provider in ("groq", "openai"):
                 response = self.client.chat.completions.create(
                     model=self.model,
@@ -209,20 +195,20 @@ Reply with ONLY the category name: code-gen, rag, or general."""
     # ---------- Legacy pattern fallback ----------
 
     CODE_GEN_PATTERNS = [
-        'trung bình', 'mean', 'average', 'tổng', 'sum', 'đếm', 'count',
-        'lớn nhất', 'max', 'nhỏ nhất', 'min', 'top', 'bottom',
-        'phân bố', 'distribution', 'nhóm', 'group', 'lọc', 'filter',
-        'so sánh', 'compare', 'tỷ lệ', 'percentage', 'ratio',
-        'bao nhiêu', 'how many', 'how much', 'tính', 'calculate', 'compute',
-        'thống kê', 'statistics', 'dự đoán', 'sai', 'trùng', 'thiếu',
+        'average', 'avg', 'mean', 'sum', 'total', 'count',
+        'max', 'min', 'top', 'bottom', 'largest', 'smallest',
+        'distribution', 'group', 'groupby', 'filter', 'compare',
+        'percentage', 'percent', 'ratio', 'how many', 'how much',
+        'calculate', 'compute', 'statistics', 'median', 'std',
+        'null', 'missing', 'duplicate', 'duplicates', 'sort', 'rank',
+        'orders by', 'show rows', 'filter rows',
     ]
 
     RAG_PATTERNS = [
-        'ý nghĩa', 'nghĩa là', 'có nghĩa', 'giải thích', 'explain',
-        'mô tả', 'describe', 'là gì', 'what is', 'tại sao', 'why',
-        'context', 'bối cảnh', 'thông tin về', 'information about',
-        'dataset này', 'dữ liệu này', 'nói về', 'about',
-        'column', 'cột', 'field', 'trường',
+        'meaning', 'means', 'explain', 'describe', 'what is', 'what does',
+        'why', 'about', 'context', 'description', 'information about',
+        'dataset', 'column', 'field', 'schema', 'represents', 'purpose',
+        'source', 'origin',
     ]
 
     def route_with_patterns(self, question: str) -> RoutingType:
@@ -230,10 +216,12 @@ Reply with ONLY the category name: code-gen, rag, or general."""
         q = question.lower()
         has_code_gen = any(p in q for p in self.CODE_GEN_PATTERNS)
         has_rag = any(p in q for p in self.RAG_PATTERNS)
-        if has_code_gen:
+        if has_code_gen and not has_rag:
             return "code-gen"
-        if has_rag:
+        if has_rag and not has_code_gen:
             return "rag"
+        if has_code_gen and has_rag:
+            return "code-gen"
         return "general"
 
     # ---------- Public API ----------

@@ -50,7 +50,7 @@ export default function ChatPanel({ profile }: Props) {
       setMessages(prev => [...prev, {
         id: crypto.randomUUID(),
         role: 'assistant',
-        content: '❌ Có lỗi xảy ra khi xử lý câu hỏi. Vui lòng thử lại.',
+        content: '❌ An error occurred while processing the question. Please try again.',
         timestamp: new Date(),
       }]);
     } finally {
@@ -59,11 +59,11 @@ export default function ChatPanel({ profile }: Props) {
   };
 
   const suggestedQuestions = [
-    'Dataset này nói về gì?',
-    'Tính trung bình các cột số',
-    'Top 5 giá trị lớn nhất',
-    'Phân bố theo nhóm',
-    'So sánh giữa các category',
+    'What is this dataset about?',
+    'Compute the average of numeric columns',
+    'Top 5 largest values',
+    'Distribution by group',
+    'Compare across categories',
   ];
 
   return (
@@ -92,11 +92,11 @@ export default function ChatPanel({ profile }: Props) {
             <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-indigo-500/20 to-purple-500/20 border border-indigo-500/20 flex items-center justify-center mb-4">
               <Bot className="w-6 h-6 text-indigo-400" />
             </div>
-            <p className="text-sm text-slate-300 mb-1">Xin chào! Tôi là AI Analyst</p>
-            <p className="text-xs text-slate-500 mb-4">Hỏi tôi bất kỳ điều gì về dataset của bạn</p>
+            <p className="text-sm text-slate-300 mb-1">Hello! I am your AI Analyst</p>
+            <p className="text-xs text-slate-500 mb-4">Ask me anything about your dataset</p>
             
             <div className="w-full space-y-2">
-              <p className="text-xs text-slate-500 font-medium uppercase tracking-wider">Gợi ý câu hỏi:</p>
+              <p className="text-xs text-slate-500 font-medium uppercase tracking-wider">Suggested questions:</p>
               {suggestedQuestions.map((q) => (
                 <button
                   key={q}
@@ -180,7 +180,7 @@ export default function ChatPanel({ profile }: Props) {
             value={input}
             onChange={(e) => setInput(e.target.value)}
             onKeyDown={(e) => { if (e.key === 'Enter' && !e.shiftKey) handleSend(); }}
-            placeholder="Hỏi về dataset... (VD: Tính trung bình cột price)"
+            placeholder="Ask about the dataset... (e.g. Compute the average of column price)"
             className="flex-1 px-4 py-2.5 rounded-xl bg-slate-700/50 border border-slate-600/50 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-indigo-500/50 focus:ring-1 focus:ring-indigo-500/20 transition-all"
             disabled={isTyping}
           />

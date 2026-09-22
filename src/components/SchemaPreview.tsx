@@ -136,7 +136,7 @@ export default function SchemaPreview({ profile, onContextUpdate, columnContexts
                         type="text"
                         value={editValue}
                         onChange={(e) => setEditValue(e.target.value)}
-                        placeholder="Mô tả cột..."
+                        placeholder="Column description..."
                         className="w-32 px-2 py-1 rounded-md bg-slate-700 border border-slate-600 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-indigo-500"
                         autoFocus
                         onKeyDown={(e) => { if (e.key === 'Enter') saveEdit(); if (e.key === 'Escape') cancelEdit(); }}
@@ -156,7 +156,7 @@ export default function SchemaPreview({ profile, onContextUpdate, columnContexts
                       <button
                         onClick={() => startEdit(col.name)}
                         className="p-1 rounded hover:bg-indigo-500/20 text-indigo-400 opacity-0 group-hover:opacity-100 transition-opacity"
-                        title="Bổ sung context"
+                        title="Add context"
                       >
                         <Edit3 className="w-3 h-3" />
                       </button>

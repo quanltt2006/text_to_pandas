@@ -81,12 +81,13 @@ class Profiler:
             **stats
         )
     
-    def profile_dataset(self, dataset_id: str, file_path: str) -> DatasetProfile:
+    def profile_dataset(self, dataset_id: str, file_path: str, df=None) -> DatasetProfile:
         """Profile entire dataset"""
         logger.info(f"Profiling dataset: {file_path}")
-        
-        # Load data
-        df = self.loader.load_pandas()
+
+        # Load data (uses the provided frame when available to avoid double reads)
+        if df is None:
+            df = self.loader.load_pandas()
         
         # Profile each column
         columns = []

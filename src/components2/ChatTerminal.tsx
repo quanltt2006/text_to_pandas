@@ -71,21 +71,21 @@ export default function ChatTerminal({
             <div>
               <h2 className="text-sm font-bold font-mono tracking-tight">AI ANALYST // PANDAS AGENT</h2>
               <p className="text-[10px] text-neutral-500 font-mono">
-                MÔ HÌNH: TEXT-TO-PANDAS V2 (ZERO-DATA-LEAKAGE)
+                MODEL: TEXT-TO-PANDAS V2 (ZERO-DATA-LEAKAGE)
               </p>
             </div>
           </div>
           <div className="flex items-center gap-3">
             <button
               onClick={onResetChat}
-              title="Đặt lại đoạn hội thoại"
+              title="Reset conversation"
               className="p-1 text-neutral-500 hover:text-black hover:bg-neutral-100 border border-transparent hover:border-black transition-all"
             >
               <RotateCcw className="w-3.5 h-3.5" />
             </button>
             <div className="flex items-center gap-2">
               <span className="w-2.5 h-2.5 rounded-full bg-emerald-500 border border-black animate-pulse"></span>
-              <span className="text-xs font-mono font-bold">TRỰC TUYẾN</span>
+              <span className="text-xs font-mono font-bold">ONLINE</span>
             </div>
           </div>
         </div>
@@ -101,7 +101,7 @@ export default function ChatTerminal({
                   </div>
                   <div className="bg-[#FAF8F5] border-2 border-black p-3.5 shadow-brutal-sm">
                     <p className="text-xs text-black leading-relaxed font-sans">
-                      <strong>Xin chào! Tôi là Trợ lý AI Phân Tích Dữ Liệu.</strong> {msg.content}
+                      <strong>Hello! I'm your AI Data Analysis Assistant.</strong> {msg.content}
                     </p>
                   </div>
                 </div>
@@ -153,7 +153,7 @@ export default function ChatTerminal({
                       <div className="flex items-center justify-between border-b border-neutral-800 pb-2 mb-2 text-[11px] text-neutral-400">
                         <span className="flex items-center gap-1.5 text-[#FFC700] font-bold">
                           <span className="w-2 h-2 bg-[#FFC700] inline-block"></span>
-                          PYTHON / PANDAS KHỞI TẠO
+                          PYTHON / PANDAS INITIALIZATION
                         </span>
                         <button
                           onClick={() => handleCopyCode(msg.id, msg.code!)}
@@ -163,12 +163,12 @@ export default function ChatTerminal({
                           {copiedCodeId === msg.id ? (
                             <>
                               <Check className="w-3 h-3 text-emerald-400" />
-                              <span className="text-emerald-400">ĐÃ CHÉP</span>
+                              <span className="text-emerald-400">COPIED</span>
                             </>
                           ) : (
                             <>
                               <Copy className="w-3 h-3" />
-                              <span>SAO CHÉP MÃ</span>
+                              <span>COPY CODE</span>
                             </>
                           )}
                         </button>
@@ -199,7 +199,7 @@ export default function ChatTerminal({
               <div className="bg-[#FAF8F5] border-2 border-black p-3.5 shadow-brutal-sm flex items-center gap-3">
                 <div className="w-3 h-3 bg-[#FFC700] border border-black animate-spin"></div>
                 <span className="text-xs font-mono font-bold text-black">
-                  Đang khởi tạo nhân Pandas Kernel &amp; biên dịch mã truy vấn...
+                  Starting Pandas Kernel &amp; compiling query code...
                 </span>
               </div>
             </div>
@@ -209,11 +209,11 @@ export default function ChatTerminal({
             <div className="flex flex-col items-center justify-center h-full text-center">
               <div className="mb-3 p-4 bg-black text-[#FFC700] font-mono text-xs font-bold shadow-brutal-sm flex items-center gap-2">
                 <Sparkles className="w-4 h-4" />
-                SẴN SÀNG PHÂN TÍCH {dataset.fileName.toUpperCase()}
+                READY TO ANALYZE {dataset.fileName.toUpperCase()}
               </div>
               <p className="text-xs font-mono text-neutral-500 max-w-sm leading-relaxed">
-                Hỏi bất kỳ câu hỏi nào về dataset. Hệ thống tự động trích xuất schema, sinh mã Pandas
-                tối ưu và trực quan hóa kết quả.
+                Ask any question about the dataset. The system extracts the schema, generates optimized
+                Pandas code, and visualizes results.
               </p>
             </div>
           )}
@@ -231,25 +231,25 @@ export default function ChatTerminal({
                 onChange={(e) => setInputValue(e.target.value)}
                 disabled={isExecuting}
                 className="w-full border-2 border-black px-4 py-3 text-xs md:text-sm font-mono placeholder:text-neutral-500 focus:outline-none focus:ring-0 focus:border-black bg-[#FAF8F5] shadow-brutal-sm disabled:opacity-50"
-                placeholder="Hỏi về dataset... (VD: Vẽ biểu đồ phân bố của cột giá theo nhóm)"
+                placeholder="Ask about the dataset... (e.g. Plot the price distribution by category)"
                 type="text"
               />
             </div>
             <button
               disabled={isExecuting || !inputValue.trim()}
               className="bg-[#FFC700] hover:bg-yellow-400 disabled:opacity-50 disabled:cursor-not-allowed border-2 border-black px-5 py-3 font-mono font-bold text-xs md:text-sm flex items-center justify-center gap-1.5 shadow-brutal hover:shadow-none hover:translate-x-0.5 hover:translate-y-0.5 transition-all cursor-pointer"
-              title="Gửi câu hỏi"
+              title="Send question"
               type="submit"
             >
-              <span>CHẠY</span>
+              <span>RUN</span>
               <Send className="w-4 h-4 text-black" />
             </button>
           </form>
           <div className="flex items-center justify-between mt-2 px-1 text-[11px] font-mono text-neutral-500">
             <span>
-              Phím tắt: <kbd className="px-1.5 py-0.5 bg-neutral-200 border border-black text-[10px] font-bold">ENTER</kbd> để thực thi
+              Shortcut: <kbd className="px-1.5 py-0.5 bg-neutral-200 border border-black text-[10px] font-bold">ENTER</kbd> to run
             </span>
-            <span>{contextNames.length > 0 ? `Context đã gắn: ${contextNames.length} cột` : 'Bảo mật: Sandbox Python nội bộ độc lập'}</span>
+            <span>{contextNames.length > 0 ? `Context attached: ${contextNames.length} columns` : 'Security: isolated in-process Python sandbox'}</span>
           </div>
         </div>
       </div>

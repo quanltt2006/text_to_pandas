@@ -18,7 +18,24 @@ class Settings(BaseSettings):
     
     # ChromaDB
     CHROMA_PERSIST_DIR: str = "./data/chroma"
-    
+
+    # RAG / retrieval strategy
+    # Only embed columns into the vector store when the dataset is wider than this
+    EMBED_COLUMN_THRESHOLD: int = 30
+    # Number of similar columns retrieved for a question (large datasets only)
+    COLUMN_RETRIEVAL_TOP_K: int = 10
+    # Max unique values a categorical column may have to be value-indexed
+    VALUE_INDEX_MAX_UNIQUE: int = 500
+    # Max values stored per indexed column (cap to keep the index small)
+    VALUE_INDEX_MAX_VALUES: int = 200
+
+    # Few-shot / self-fix
+    FEW_SHOT_TOP_K: int = 3
+    # Schema columns to inline directly into the code-gen prompt (below the embed threshold)
+    SCHEMA_MAX_INLINE_COLUMNS: int = 30
+    # Max retries to self-correct generated pandas code after a failed execution
+    MAX_FIX_ATTEMPTS: int = 2
+
     # File Upload
     MAX_FILE_SIZE_MB: int = 50
     UPLOAD_DIR: str = "./data/uploads"

@@ -72,7 +72,7 @@ export default function App() {
       setMessages(prev => [...prev, {
         id: uuidv4(),
         role: 'assistant',
-        content: '❌ Có lỗi xảy ra khi xử lý câu hỏi. Vui lòng thử lại.',
+        content: '❌ An error occurred while processing the question. Please try again.',
         timestamp: new Date(),
       }]);
     } finally {

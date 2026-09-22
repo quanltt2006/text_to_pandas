@@ -34,6 +34,15 @@ class ColumnContextModel(Base):
     user_description = Column(Text, nullable=False)
     updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
 
+class ValueIndexModel(Base):
+    """Precomputed categorical value index used for value-linking (entity -> actual value)."""
+    __tablename__ = "value_index"
+    
+    id = Column(String, primary_key=True)
+    dataset_id = Column(String, nullable=False, index=True)
+    data = Column(JSON, nullable=False)  # {column_name: [ ...actual values... ]}
+    created_at = Column(DateTime, default=datetime.utcnow)
+
 class ChatHistoryModel(Base):
     __tablename__ = "chat_history"
     

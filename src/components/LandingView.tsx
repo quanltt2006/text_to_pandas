@@ -14,11 +14,11 @@ export default function LandingView({ onDataLoaded }: Props) {
 
   const handleFile = useCallback(async (file: File) => {
     if (!file.name.endsWith('.csv')) {
-      setError('Vui lòng chọn file CSV');
+      setError('Please choose a CSV file');
       return;
     }
     if (file.size > 50 * 1024 * 1024) {
-      setError('File quá lớn (>50MB). MVP hỗ trợ tối đa 50MB.');
+      setError('File too large (>50MB). MVP supports up to 50MB.');
       return;
     }
 
@@ -31,7 +31,7 @@ export default function LandingView({ onDataLoaded }: Props) {
       setError(
         err instanceof Error && err.message
           ? err.message
-          : 'Lỗi khi upload file CSV. Kiểm tra backend đã chạy chưa?'
+          : 'Error uploading CSV. Is the backend running?'
       );
     } finally {
       setIsLoading(false);
@@ -53,7 +53,7 @@ export default function LandingView({ onDataLoaded }: Props) {
   const loadSampleData = useCallback(() => {
     const headers = 'id,name,category,price,quantity,rating,city,date';
     const categories = ['Electronics', 'Clothing', 'Food', 'Books', 'Sports'];
-    const cities = ['Hà Nội', 'TP.HCM', 'Đà Nẵng', 'Hải Phòng', 'Cần Thơ'];
+    const cities = ['New York', 'Los Angeles', 'Chicago', 'Houston', 'Phoenix'];
     const names = ['Product A', 'Product B', 'Product C', 'Product D', 'Product E', 'Widget X', 'Gadget Y', 'Item Z'];
 
     const rows = Array.from({ length: 200 }, (_, i) => {
@@ -79,13 +79,13 @@ export default function LandingView({ onDataLoaded }: Props) {
       <div className="text-center max-w-3xl mx-auto mb-8 space-y-4">
         <h1 className="text-4xl sm:text-6xl font-black text-slate-950 tracking-tight leading-none uppercase">
           <span className="bg-[#FFCC00] px-3 py-1 inline-block border-2 border-slate-950 shadow-[3px_3px_0px_#111111] mb-2">
-            TẢI LÊN &amp; PHÂN TÍCH
+            UPLOAD &amp; ANALYZE
           </span>
           <br />
-          DỮ LIỆU CSV TỨC THÌ
+          YOUR CSV DATA INSTANTLY
         </h1>
         <p className="text-slate-800 text-sm sm:text-base font-medium max-w-xl mx-auto leading-relaxed pt-2">
-          Tự động trích xuất schema, suy luận kiểu dữ liệu thống kê và khởi tạo môi trường thực thi Pandas cô lập.
+          Automatically extracts the schema, infers data types, and starts an isolated Pandas execution environment.
         </p>
       </div>
 
@@ -109,16 +109,16 @@ export default function LandingView({ onDataLoaded }: Props) {
           </div>
 
           <h3 className="text-2xl sm:text-3xl font-black text-slate-950 uppercase tracking-tight">
-            {isLoading ? 'Đang PHÂN TÍCH...' : 'KÉO THẢ FILE CSV VÀO ĐÂY'}
+            {isLoading ? 'ANALYZING...' : 'DRAG & DROP YOUR CSV HERE'}
           </h3>
           <p className="text-sm text-slate-700 mt-2 font-medium uppercase">
-            hoặc{' '}
+            or{' '}
             <span className="underline font-bold decoration-2 underline-offset-4 text-slate-950 hover:bg-[#FFCC00] px-1 transition-colors">
-              Duyệt tập tin từ máy tính
+              Browse files from your computer
             </span>
           </p>
           <p className="mt-4 text-xs font-mono text-slate-600 uppercase font-semibold">
-            HỖ TRỢ ĐỊNH DẠNG .CSV • TỐI ĐA 50MB
+            SUPPORTS .CSV FORMAT • UP TO 50MB
           </p>
 
           <input
@@ -139,14 +139,14 @@ export default function LandingView({ onDataLoaded }: Props) {
 
         {/* Load Sample Data Button */}
         <div className="mt-6 flex flex-wrap items-center justify-center gap-3">
-          <span className="text-xs font-mono font-bold uppercase text-slate-700">Chưa có file?</span>
+          <span className="text-xs font-mono font-bold uppercase text-slate-700">No file yet?</span>
           <button
             type="button"
             onClick={loadSampleData}
             disabled={isLoading}
             className="neo-btn inline-flex items-center gap-2 px-5 py-2 font-bold text-xs uppercase tracking-wider text-slate-950 bg-white hover:bg-[#FFCC00] cursor-pointer disabled:opacity-50"
           >
-            <span>⚡ Khởi Chạy Dữ Liệu Mẫu (200 Rows)</span>
+            <span>⚡ Launch Sample Dataset (200 Rows)</span>
             <span>→</span>
           </button>
         </div>
@@ -165,11 +165,11 @@ export default function LandingView({ onDataLoaded }: Props) {
             </div>
             <h2 className="text-base font-black text-slate-950 uppercase tracking-tight">SCHEMA-AWARE RAG</h2>
             <p className="text-xs text-slate-700 leading-relaxed font-medium">
-              Tự động gắn thẻ ngữ cảnh, phân tích cấu trúc giữa các cột dữ liệu và truy xuất ngữ nghĩa siêu tốc.
+              Auto-tags context, analyzes column structures, and retrieves semantics at high speed.
             </p>
           </div>
           <div className="mt-5 pt-3 border-t-2 border-slate-900 flex items-center justify-between text-xs font-bold uppercase text-slate-950 font-mono">
-            <span className="underline decoration-2">Khám phá</span>
+            <span className="underline decoration-2">Explore</span>
             <span className="font-bold">→</span>
           </div>
         </div>
@@ -185,11 +185,11 @@ export default function LandingView({ onDataLoaded }: Props) {
             </div>
             <h2 className="text-base font-black text-slate-950 uppercase tracking-tight">TEXT-TO-PANDAS AGENT</h2>
             <p className="text-xs text-slate-700 leading-relaxed font-medium">
-              Biên dịch ngôn ngữ tự nhiên thành mã Pandas tối ưu, tự phát hiện lỗi cú pháp và vẽ biểu đồ phân tích tức thời.
+              Compiles natural language into optimized Pandas code, detects syntax errors, and charts results instantly.
             </p>
           </div>
           <div className="mt-5 pt-3 border-t-2 border-slate-900 flex items-center justify-between text-xs font-bold uppercase text-slate-950 font-mono">
-            <span className="underline decoration-2">Sinh code</span>
+            <span className="underline decoration-2">Generate code</span>
             <span className="font-bold">→</span>
           </div>
         </div>
@@ -204,11 +204,11 @@ export default function LandingView({ onDataLoaded }: Props) {
             </div>
             <h2 className="text-base font-black text-slate-950 uppercase tracking-tight">EXECUTION SANDBOX</h2>
             <p className="text-xs text-slate-700 leading-relaxed font-medium">
-              Không gian thực thi Python cô lập, chặn rò rỉ dữ liệu nhạy cảm và kiểm soát nghiêm ngặt tài nguyên bộ nhớ.
+              Isolated Python execution space that blocks sensitive data leakage and strictly controls memory resources.
             </p>
           </div>
           <div className="mt-5 pt-3 border-t-2 border-slate-900 flex items-center justify-between text-xs font-bold uppercase text-slate-950 font-mono">
-            <span className="underline decoration-2">Bảo mật</span>
+            <span className="underline decoration-2">Security</span>
             <span className="font-bold">→</span>
           </div>
         </div>

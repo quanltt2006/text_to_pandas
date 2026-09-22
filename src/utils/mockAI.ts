@@ -7,20 +7,15 @@ function routeQuestion(question: string, profile: DatasetProfile): 'rag' | 'code
   
   // Code-gen patterns: statistics, filtering, aggregation
   const codeGenPatterns = [
-    'trung bình', 'mean', 'average', 'tổng', 'sum', 'đếm', 'count',
-    'lớn nhất', 'max', 'nhỏ nhất', 'min', 'top', 'bottom',
-    'phân bố', 'distribution', 'nhóm', 'group', 'lọc', 'filter',
-    'so sánh', 'compare', 'tỷ lệ', 'percentage', 'ratio',
-    'biểu đồ', 'chart', 'plot', 'vẽ', 'hiển thị',
-    'bao nhiêu', 'how many', 'how much', 'what is',
+    'mean', 'average', 'sum', 'total', 'count', 'max', 'min', 'top', 'bottom',
+    'largest', 'smallest', 'distribution', 'group', 'groupby', 'filter', 'compare',
+    'percentage', 'ratio', 'chart', 'plot', 'how many', 'how much', 'what is',
   ];
   
   // RAG patterns: meaning, description, context
   const ragPatterns = [
-    'ý nghĩa', 'nghĩa là', 'có nghĩa', 'giải thích', 'explain',
-    'mô tả', 'describe', 'là gì', 'what is', 'tại sao', 'why',
-    'context', 'bối cảnh', 'thông tin về', 'information about',
-    'dataset này', 'dữ liệu này', 'nói về',
+    'meaning', 'means', 'explain', 'describe', 'what does', 'what is', 'why',
+    'context', 'about', 'dataset', 'column',
   ];
   
   const hasCodeGen = codeGenPatterns.some(p => q.includes(p));
@@ -39,68 +34,68 @@ function generatePandasCode(question: string, profile: DatasetProfile): { code: 
   const firstNumeric = numericCols[0]?.name || 'value';
   const firstString = stringCols[0]?.name || 'category';
   
-  if (q.includes('trung bình') || q.includes('mean') || q.includes('average')) {
+  if (q.includes('mean') || q.includes('average')) {
     return {
-      code: `import pandas as pd\n\ndf = pd.read_csv('data.csv')\nresult = df['${firstNumeric}'].mean()\nprint(f"Trung bình: {result:.2f}")`,
-      explanation: `Tính giá trị trung bình của cột '${firstNumeric}'`,
+      code: `import pandas as pd\n\ndf = pd.read_csv('data.csv')\nresult = df['${firstNumeric}'].mean()\nprint(f"Average: {result:.2f}")`,
+      explanation: `Compute the average of column '${firstNumeric}'`,
     };
   }
   
-  if (q.includes('tổng') || q.includes('sum')) {
+  if (q.includes('total') || q.includes('sum')) {
     return {
-      code: `import pandas as pd\n\ndf = pd.read_csv('data.csv')\nresult = df['${firstNumeric}'].sum()\nprint(f"Tổng: {result:,.2f}")`,
-      explanation: `Tính tổng giá trị cột '${firstNumeric}'`,
+      code: `import pandas as pd\n\ndf = pd.read_csv('data.csv')\nresult = df['${firstNumeric}'].sum()\nprint(f"Total: {result:,.2f}")`,
+      explanation: `Compute the sum of column '${firstNumeric}'`,
     };
   }
   
-  if (q.includes('lớn nhất') || q.includes('max') || q.includes('top')) {
+  if (q.includes('largest') || q.includes('max') || q.includes('top')) {
     return {
       code: `import pandas as pd\n\ndf = pd.read_csv('data.csv')\ntop_10 = df.nlargest(10, '${firstNumeric}')\nprint(top_10)`,
-      explanation: `Lấy top 10 bản ghi có giá trị '${firstNumeric}' lớn nhất`,
+      explanation: `Return the top 10 records with the highest '${firstNumeric}'`,
     };
   }
   
-  if (q.includes('nhỏ nhất') || q.includes('min') || q.includes('bottom')) {
+  if (q.includes('smallest') || q.includes('min') || q.includes('bottom')) {
     return {
       code: `import pandas as pd\n\ndf = pd.read_csv('data.csv')\nbottom_10 = df.nsmallest(10, '${firstNumeric}')\nprint(bottom_10)`,
-      explanation: `Lấy 10 bản ghi có giá trị '${firstNumeric}' nhỏ nhất`,
+      explanation: `Return the 10 records with the lowest '${firstNumeric}'`,
     };
   }
   
-  if (q.includes('nhóm') || q.includes('group') || q.includes('theo')) {
+  if (q.includes('group') || q.includes('breakdown') || q.includes('by category')) {
     const groupCol = firstString;
     const aggCol = firstNumeric;
     return {
       code: `import pandas as pd\n\ndf = pd.read_csv('data.csv')\ngrouped = df.groupby('${groupCol}')['${aggCol}'].agg(['mean', 'sum', 'count'])\ngrouped = grouped.sort_values('sum', ascending=False)\nprint(grouped)`,
-      explanation: `Group by '${groupCol}' và tính mean, sum, count của '${aggCol}'`,
+      explanation: `Group by '${groupCol}' and compute mean, sum, count of '${aggCol}'`,
     };
   }
   
-  if (q.includes('phân bố') || q.includes('distribution') || q.includes('tỷ lệ')) {
+  if (q.includes('distribution') || q.includes('percentage') || q.includes('ratio')) {
     return {
       code: `import pandas as pd\n\ndf = pd.read_csv('data.csv')\ndist = df['${firstString}'].value_counts()\ndist_pct = df['${firstString}'].value_counts(normalize=True) * 100\nresult = pd.DataFrame({'count': dist, 'percentage': dist_pct.round(2)})\nprint(result)`,
-      explanation: `Phân bố giá trị của cột '${firstString}'`,
+      explanation: `Distribution of column '${firstString}'`,
     };
   }
   
-  if (q.includes('đếm') || q.includes('count') || q.includes('bao nhiêu')) {
+  if (q.includes('count') || q.includes('how many') || q.includes('how much')) {
     return {
-      code: `import pandas as pd\n\ndf = pd.read_csv('data.csv')\ntotal_rows = len(df)\nunique_values = df['${firstString}'].nunique()\nnull_count = df['${firstString}'].isnull().sum()\nprint(f"Tổng số dòng: {total_rows}")\nprint(f"Giá trị unique: {unique_values}")\nprint(f"Giá trị null: {null_count}")`,
-      explanation: `Đếm tổng số dòng, unique values, và null values`,
+      code: `import pandas as pd\n\ndf = pd.read_csv('data.csv')\ntotal_rows = len(df)\nunique_values = df['${firstString}'].nunique()\nnull_count = df['${firstString}'].isnull().sum()\nprint(f"Total rows: {total_rows}")\nprint(f"Unique values: {unique_values}")\nprint(f"Null values: {null_count}")`,
+      explanation: `Count total rows, unique values, and null values`,
     };
   }
   
-  if (q.includes('so sánh') || q.includes('compare')) {
+  if (q.includes('compare') || q.includes('versus')) {
     return {
       code: `import pandas as pd\n\ndf = pd.read_csv('data.csv')\ncomparison = df.groupby('${firstString}')['${firstNumeric}'].agg(['mean', 'median', 'std'])\ncomparison = comparison.sort_values('mean', ascending=False)\nprint(comparison)`,
-      explanation: `So sánh giá trị trung bình của '${firstNumeric}' theo từng nhóm '${firstString}'`,
+      explanation: `Compare the average of '${firstNumeric}' across '${firstString}' groups`,
     };
   }
   
   // Default: describe
   return {
-    code: `import pandas as pd\n\ndf = pd.read_csv('data.csv')\n# Tổng quan dataset\nprint(f"Shape: {df.shape}")\nprint(f"\\nColumns: {list(df.columns)}")\nprint(f"\\nDtypes:\\n{df.dtypes}")\nprint(f"\\nDescribe:\\n{df.describe()}")\nprint(f"\\nNull counts:\\n{df.isnull().sum()}")`,
-    explanation: `Tổng quan dataset: shape, columns, dtypes, statistics, null counts`,
+    code: `import pandas as pd\n\ndf = pd.read_csv('data.csv')\n# Dataset overview\nprint(f"Shape: {df.shape}")\nprint(f"\\nColumns: {list(df.columns)}")\nprint(f"\\nDtypes:\\n{df.dtypes}")\nprint(f"\\nDescribe:\\n{df.describe()}")\nprint(f"\\nNull counts:\\n{df.isnull().sum()}")`,
+    explanation: `Dataset overview: shape, columns, dtypes, statistics, null counts`,
   };
 }
 
@@ -109,7 +104,7 @@ function generateMockResult(question: string, profile: DatasetProfile): { tableD
   const numericCols = profile.columns.filter(c => c.dtype === 'number');
   const stringCols = profile.columns.filter(c => c.dtype === 'string');
   
-  if (q.includes('nhóm') || q.includes('group') || q.includes('phân bố') || q.includes('distribution') || q.includes('theo')) {
+  if (q.includes('group') || q.includes('breakdown') || q.includes('distribution') || q.includes('by category')) {
     const groupCol = stringCols[0]?.name || 'Category';
     const samples = stringCols[0]?.sampleValues || ['A', 'B', 'C', 'D', 'E'];
     const labels = samples.slice(0, 5);
@@ -129,7 +124,7 @@ function generateMockResult(question: string, profile: DatasetProfile): { tableD
     };
   }
   
-  if (q.includes('top') || q.includes('lớn nhất') || q.includes('max')) {
+  if (q.includes('top') || q.includes('largest') || q.includes('max')) {
     const numCol = numericCols[0]?.name || 'Value';
     const rows = Array.from({ length: 10 }, (_, i) => [
       String(i + 1),
@@ -149,7 +144,7 @@ function generateMockResult(question: string, profile: DatasetProfile): { tableD
     };
   }
   
-  if (q.includes('so sánh') || q.includes('compare')) {
+  if (q.includes('compare') || q.includes('versus')) {
     const groupCol = stringCols[0]?.name || 'Category';
     const numCol = numericCols[0]?.name || 'Value';
     const samples = stringCols[0]?.sampleValues || ['A', 'B', 'C', 'D'];
@@ -170,7 +165,7 @@ function generateMockResult(question: string, profile: DatasetProfile): { tableD
     };
   }
   
-  if (q.includes('tỷ lệ') || q.includes('percentage') || q.includes('pie')) {
+  if (q.includes('percentage') || q.includes('ratio') || q.includes('pie')) {
     const samples = stringCols[0]?.sampleValues || ['A', 'B', 'C', 'D', 'E'];
     const labels = samples.slice(0, 5);
     const values = labels.map(() => Math.floor(Math.random() * 40) + 10);
@@ -210,18 +205,18 @@ function generateMockResult(question: string, profile: DatasetProfile): { tableD
 function generateRAGResponse(question: string, profile: DatasetProfile): string {
   const q = question.toLowerCase();
   
-  if (q.includes('dataset') || q.includes('dữ liệu') || q.includes('nói về')) {
-    return `📊 **Tổng quan Dataset: ${profile.fileName}**\n\nDataset này chứa ${profile.rowCount.toLocaleString()} bản ghi với ${profile.columnCount} cột.\n\n**Các cột chính:**\n${profile.columns.map(c => `- \`${c.name}\` (${c.dtype}): ${c.uniqueCount} giá trị unique, ${c.nullPercent}% null`).join('\n')}\n\n**Phân tích tự động:**\n- Số cột numeric: ${profile.columns.filter(c => c.dtype === 'number').length}\n- Số cột categorical: ${profile.columns.filter(c => c.dtype === 'string').length}\n- Kích thước file: ${profile.fileSize}\n\n💡 *Thông tin này được suy luận từ schema và thống kê. Bạn có thể bổ sung context cho từng cột để có mô tả chính xác hơn.*`;
+  if (q.includes('dataset') || q.includes('data') || q.includes('about')) {
+    return `📊 **Dataset Overview: ${profile.fileName}**\n\nThis dataset contains ${profile.rowCount.toLocaleString()} records across ${profile.columnCount} columns.\n\n**Main columns:**\n${profile.columns.map(c => `- \`${c.name}\` (${c.dtype}): ${c.uniqueCount} unique values, ${c.nullPercent}% null`).join('\n')}\n\n**Auto analysis:**\n- Numeric columns: ${profile.columns.filter(c => c.dtype === 'number').length}\n- Categorical columns: ${profile.columns.filter(c => c.dtype === 'string').length}\n- File size: ${profile.fileSize}\n\n💡 *This information is inferred from schema and statistics. You can add per-column context for more accurate descriptions.*`;
   }
   
-  if (q.includes('ý nghĩa') || q.includes('giải thích') || q.includes('là gì')) {
+  if (q.includes('meaning') || q.includes('explain') || q.includes('what is')) {
     const mentionedCol = profile.columns.find(c => q.includes(c.name.toLowerCase()));
     if (mentionedCol) {
-      return `📋 **Cột: \`${mentionedCol.name}\`**\n\n- **Kiểu dữ liệu:** ${mentionedCol.dtype}\n- **Giá trị unique:** ${mentionedCol.uniqueCount}\n- **Tỷ lệ null:** ${mentionedCol.nullPercent}%\n- **Sample values:** ${mentionedCol.sampleValues.join(', ')}\n${mentionedCol.dtype === 'number' ? `- **Range:** ${mentionedCol.min} → ${mentionedCol.max}\n- **Mean:** ${mentionedCol.mean}\n- **Median:** ${mentionedCol.median}` : ''}\n\n🔍 *Dựa trên tên cột và giá trị mẫu, cột này có thể liên quan đến ${mentionedCol.dtype === 'number' ? 'dữ liệu định lượng' : 'phân loại nhóm/danh mục'}.*\n\n⚠️ *Đây là suy đoán tự động. Bạn có thể chỉnh sửa mô tả trong phần Schema để cung cấp context chính xác hơn.*`;
+      return `📋 **Column: \`${mentionedCol.name}\`**\n\n- **Data type:** ${mentionedCol.dtype}\n- **Unique values:** ${mentionedCol.uniqueCount}\n- **Null rate:** ${mentionedCol.nullPercent}%\n- **Sample values:** ${mentionedCol.sampleValues.join(', ')}\n${mentionedCol.dtype === 'number' ? `- **Range:** ${mentionedCol.min} → ${mentionedCol.max}\n- **Mean:** ${mentionedCol.mean}\n- **Median:** ${mentionedCol.median}` : ''}\n\n🔍 *Based on the column name and sample values, this column likely relates to ${mentionedCol.dtype === 'number' ? 'quantitative data' : 'a group/category classifier'}.*\n\n⚠️ *This is an automatic guess. Edit the description in the Schema section to provide an accurate context.*`;
     }
   }
   
-  return `🤖 **Phân tích từ RAG Context:**\n\nDựa trên schema và metadata đã embed, dataset "${profile.fileName}" có các đặc điểm:\n\n1. **Quy mô:** ${profile.rowCount.toLocaleString()} rows × ${profile.columnCount} columns\n2. **Chất lượng dữ liệu:** ${profile.columns.filter(c => c.nullPercent < 5).length}/${profile.columnCount} cột có < 5% missing values\n3. **Đa dạng:** Tổng cộng ${profile.columns.reduce((sum, c) => sum + c.uniqueCount, 0).toLocaleString()} giá trị unique trên tất cả cột\n\n💡 *Hãy thử hỏi cụ thể hơn về một cột hoặc yêu cầu phân tích số liệu!*`;
+  return `🤖 **Analysis from RAG Context:**\n\nBased on the embedded schema and metadata, dataset "${profile.fileName}" shows:\n\n1. **Scale:** ${profile.rowCount.toLocaleString()} rows × ${profile.columnCount} columns\n2. **Data quality:** ${profile.columns.filter(c => c.nullPercent < 5).length}/${profile.columnCount} columns with < 5% missing values\n3. **Diversity:** ${profile.columns.reduce((sum, c) => sum + c.uniqueCount, 0).toLocaleString()} unique values across all columns\n\n💡 *Ask about a specific column or request a numeric analysis!*`;
 }
 
 export async function processQuestion(
@@ -241,7 +236,7 @@ export async function processQuestion(
     return {
       id,
       role: 'assistant',
-      content: `🔧 **Text-to-Pandas Agent**\n\n${explanation}\n\n${result.tableData ? '✅ Query thực thi thành công. Kết quả:' : '✅ Code đã được sinh và sẵn sàng chạy.'}`,
+      content: `🔧 **Text-to-Pandas Agent**\n\n${explanation}\n\n${result.tableData ? '✅ Query executed successfully. Result:' : '✅ Code generated and ready to run.'}`,
       code,
       tableData: result.tableData,
       chartData: result.chartData,
@@ -264,7 +259,7 @@ export async function processQuestion(
   return {
     id,
     role: 'assistant',
-    content: `🤔 Tôi hiểu câu hỏi của bạn. Bạn có thể:\n\n1. **Hỏi về ý nghĩa cột** → "Cột X có ý nghĩa gì?"\n2. **Yêu cầu phân tích số liệu** → "Tính trung bình cột Y", "Top 10 giá trị lớn nhất"\n3. **So sánh, phân nhóm** → "So sánh Z theo nhóm W"\n4. **Tổng quan dataset** → "Dataset này nói về gì?"\n\nHãy thử một trong các câu hỏi trên!`,
+    content: `🤔 I understand your question. You can:\n\n1. **Ask about a column** → "What does column X mean?"\n2. **Request a numeric analysis** → "Compute the average of column Y", "Top 10 largest"\n3. **Compare or group** → "Compare Z by group W"\n4. **Dataset overview** → "What is this dataset about?"\n\nTry one of the above!`,
     timestamp: new Date(),
     type: 'general',
   };

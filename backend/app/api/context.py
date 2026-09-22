@@ -7,6 +7,7 @@ import uuid
 
 from app.db.session import get_session, DatasetModel, ColumnContextModel
 from app.services.embedding_store import EmbeddingStore
+from app.core.config import settings
 from app.models.schemas import ContextUpdateRequest, ColumnContext, DatasetProfile
 
 router = APIRouter()
@@ -56,12 +57,15 @@ async def update_context(
     
     await db.commit()
     
-    # Re-embed schema with new context
+    # Re-embed schema with new context (only datasets that have an embedding index)
     try:
         profile = DatasetProfile(**dataset.profile_json)
-        embedding_store = EmbeddingStore()
-        embedding_store.embed_schema(profile, request.columns)
-        logger.info("Schema re-embedded with new context")
+        if profile.column_count > settings.EMBED_COLUMN_THRESHOLD:
+            embedding_store = EmbeddingStore()
+            embedding_store.embed_schema(profile, request.columns)
+            logger.info("Schema re-embedded with new context")
+        else:
+            logger.info("Dataset stays inline (embeddable threshold not reached); context stored in DB only")
     except Exception as e:
         logger.warning(f"Re-embedding failed: {e}")
     

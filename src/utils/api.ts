@@ -1,8 +1,8 @@
 import { ChatMessage, ColumnProfile, DatasetProfile } from '../types';
 
-// Dev: gọi /api -> Vite proxy tới localhost:8000
-// Prod: đặt VITE_API_BASE=https://<backend>.onrender.com/api trên Render static site,
-// nếu không đặt thì dùng cùng domain (/api) cho trường hợp deploy 1 service.
+// Dev: /api -> Vite proxy to localhost:8000
+// Prod: set VITE_API_BASE=https://<backend>.onrender.com/api on Render static site,
+// or leave unset to use the same domain (/api) when deploying a single service.
 const API_BASE = import.meta.env.VITE_API_BASE || '/api';
 
 interface BackendColumnProfile {
@@ -118,7 +118,7 @@ export async function uploadCSV(file: File): Promise<{ datasetId: string; profil
 
   const data = await res.json();
   if (!res.ok) {
-    throw new Error(data.detail || data.message || 'Upload thất bại');
+    throw new Error(data.detail || data.message || 'Upload failed');
   }
 
   return {
@@ -136,7 +136,7 @@ export async function sendChatQuestion(datasetId: string, question: string): Pro
 
   const data = await res.json();
   if (!res.ok) {
-    throw new Error(data.detail || 'Chat thất bại');
+    throw new Error(data.detail || 'Chat failed');
   }
 
   return mapChatMessage(data.message);
@@ -151,7 +151,7 @@ export async function addColumnContexts(datasetId: string, columns: { name: stri
 
   if (!res.ok) {
     const data = await res.json().catch(() => null);
-    throw new Error(data?.detail || 'Cập nhật context thất bại');
+    throw new Error(data?.detail || 'Failed to update context');
   }
 }
 

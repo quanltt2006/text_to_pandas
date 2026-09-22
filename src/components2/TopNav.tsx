@@ -33,15 +33,15 @@ export default function TopNav({ currentProfile, onChangeDatasetClick, onExportR
           <button
             onClick={onChangeDatasetClick}
             type="button"
-            title="Nhấn để đổi dữ liệu"
+            title="Click to change dataset"
             className="flex items-center gap-2 bg-[#F0ECE4] hover:bg-[#E5E2DC] px-3 py-1 border border-black text-xs font-mono transition-colors text-left"
           >
             <span className="inline-block w-2 h-2 bg-[#FFC700] border border-black"></span>
             <span className="font-bold truncate max-w-[180px] sm:max-w-[260px]">{currentProfile.fileName}</span>
             <span className="text-neutral-500">|</span>
-            <span>{currentProfile.rowCount.toLocaleString()} DÒNG</span>
+            <span>{currentProfile.rowCount.toLocaleString()} ROWS</span>
             <span className="text-neutral-500">•</span>
-            <span>{currentProfile.columnCount} CỘT</span>
+            <span>{currentProfile.columnCount} COLUMNS</span>
           </button>
         </div>
 
@@ -58,7 +58,7 @@ export default function TopNav({ currentProfile, onChangeDatasetClick, onExportR
             type="button"
           >
             <Upload className="w-3.5 h-3.5 stroke-[2.5]" />
-            <span>ĐỔI TẬP DỮ LIỆU</span>
+            <span>CHANGE DATASET</span>
           </button>
 
           <button
@@ -67,7 +67,7 @@ export default function TopNav({ currentProfile, onChangeDatasetClick, onExportR
             type="button"
           >
             <Printer className="w-3.5 h-3.5 stroke-[2.5]" />
-            <span>XUẤT BÁO CÁO</span>
+            <span>EXPORT REPORT</span>
           </button>
         </div>
       </div>

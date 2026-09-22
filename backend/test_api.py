@@ -14,16 +14,16 @@ def test_upload():
     
     # Create sample CSV
     csv_content = """id,name,category,price,quantity,rating,city,date
-1,Product A,Electronics,299.99,50,4.5,Hà Nội,2024-01-15
-2,Product B,Clothing,49.99,120,4.2,TP.HCM,2024-01-16
-3,Product C,Food,15.50,200,4.8,Đà Nẵng,2024-01-17
-4,Product D,Books,25.00,80,4.6,Hải Phòng,2024-01-18
-5,Product E,Sports,89.99,65,4.3,Cần Thơ,2024-01-19
-6,Product F,Electronics,599.99,30,4.7,Hà Nội,2024-01-20
-7,Product G,Clothing,79.99,95,4.1,TP.HCM,2024-01-21
-8,Product H,Food,12.99,150,4.9,Đà Nẵng,2024-01-22
-9,Product I,Books,35.00,60,4.4,Hải Phòng,2024-01-23
-10,Product J,Sports,129.99,45,4.5,Cần Thơ,2024-01-24
+1,Product A,Electronics,299.99,50,4.5,New York,2024-01-15
+2,Product B,Clothing,49.99,120,4.2,Los Angeles,2024-01-16
+3,Product C,Food,15.50,200,4.8,Chicago,2024-01-17
+4,Product D,Books,25.00,80,4.6,Houston,2024-01-18
+5,Product E,Sports,89.99,65,4.3,Phoenix,2024-01-19
+6,Product F,Electronics,599.99,30,4.7,New York,2024-01-20
+7,Product G,Clothing,79.99,95,4.1,Los Angeles,2024-01-21
+8,Product H,Food,12.99,150,4.9,Chicago,2024-01-22
+9,Product I,Books,35.00,60,4.4,Houston,2024-01-23
+10,Product J,Sports,129.99,45,4.5,Phoenix,2024-01-24
 """
     
     with open('test_data.csv', 'w') as f:
@@ -76,11 +76,11 @@ def test_context(dataset_id):
     
     contexts = {
         "columns": [
-            {"name": "category", "user_description": "Loại sản phẩm: Electronics, Clothing, Food, Books, Sports"},
-            {"name": "price", "user_description": "Giá bán sản phẩm (VNĐ, đã bao gồm VAT)"},
-            {"name": "quantity", "user_description": "Số lượng sản phẩm đã bán trong tháng"},
-            {"name": "rating", "user_description": "Đánh giá trung bình từ khách hàng (1-5 sao)"},
-            {"name": "city", "user_description": "Thành phố nơi khách hàng mua hàng"}
+            {"name": "category", "user_description": "Product category: Electronics, Clothing, Food, Books, Sports"},
+            {"name": "price", "user_description": "Product unit price (USD, tax included)"},
+            {"name": "quantity", "user_description": "Units sold in the month"},
+            {"name": "rating", "user_description": "Average customer rating (1-5 stars)"},
+            {"name": "city", "user_description": "City where the purchase happened"}
         ]
     }
     
@@ -143,19 +143,19 @@ def main():
     
     time.sleep(1)  # Wait for re-embedding
     
-    # Test chat - RAG
-    test_chat(dataset_id, "Dataset này nói về gì?")
-    
+# Test chat - RAG
+    test_chat(dataset_id, "What is this dataset about?")
+
     time.sleep(0.5)
-    
+
     # Test chat - Code-gen
-    test_chat(dataset_id, "Tính trung bình giá sản phẩm")
-    
+    test_chat(dataset_id, "Compute the average product price")
+
     time.sleep(0.5)
-    
-    # Test chat - Code-gen
-    test_chat(dataset_id, "Top 3 sản phẩm có giá cao nhất")
-    
+
+    # Test chat - Code-gen (value linking: 'Electronics' should be linked to category)
+    test_chat(dataset_id, "Top 3 products with the highest price")
+
     print("\n" + "=" * 60)
     print("✅ All tests completed!")
     print("=" * 60)

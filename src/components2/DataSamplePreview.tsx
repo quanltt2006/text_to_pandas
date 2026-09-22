@@ -70,7 +70,7 @@ export default function DataSamplePreview({ profile, columnContexts, onContextUp
             </button>
           </div>
         </div>
-        <span className="text-[10px] font-mono text-neutral-500">{profile.columnCount} CỘT</span>
+        <span className="text-[10px] font-mono text-neutral-500">{profile.columnCount} COLUMNS</span>
       </div>
 
       {activeTab === 'columns' ? (
@@ -87,7 +87,7 @@ export default function DataSamplePreview({ profile, columnContexts, onContextUp
               <div className="flex items-center gap-1.5 text-[10px] text-neutral-500 shrink-0">
                 <span className={`px-1 border uppercase ${dtypeBadge(col.dtype)}`}>{col.dtype}</span>
                 {col.uniqueCount !== undefined && (
-                  <span title="Giá trị unique">{col.uniqueCount} unique</span>
+                  <span title="Unique values">{col.uniqueCount} unique</span>
                 )}
                 {col.nullPercent !== undefined && col.nullPercent > 0 && (
                   <span title="Null percentage" className="text-red-600">{col.nullPercent}% null</span>
@@ -116,7 +116,7 @@ export default function DataSamplePreview({ profile, columnContexts, onContextUp
                         type="text"
                         value={editValue}
                         onChange={(e) => setEditValue(e.target.value)}
-                        placeholder="Mô tả cột..."
+                        placeholder="Column description..."
                         autoFocus
                         onKeyDown={(e) => { if (e.key === 'Enter') saveEdit(); if (e.key === 'Escape') cancelEdit(); }}
                         className="w-full min-w-0 px-1.5 py-0.5 border border-black text-[10px] font-mono bg-white focus:outline-none"
@@ -126,7 +126,7 @@ export default function DataSamplePreview({ profile, columnContexts, onContextUp
                     </span>
                   ) : (
                     <span className={`text-neutral-600 truncate flex-1 ${ctx ? '' : 'italic text-neutral-400'}`}>
-                      {ctx || 'Chưa có mô tả'}
+                      {ctx || 'No description'}
                     </span>
                   )}
                 </div>
@@ -134,7 +134,7 @@ export default function DataSamplePreview({ profile, columnContexts, onContextUp
                   <button
                     onClick={() => startEdit(col.name)}
                     className="text-neutral-400 hover:text-black shrink-0 transition-colors"
-                    title="Bổ sung context"
+                    title="Add context"
                   >
                     <Edit3 className="w-3 h-3" />
                   </button>
@@ -148,9 +148,9 @@ export default function DataSamplePreview({ profile, columnContexts, onContextUp
       <div className="flex items-center justify-between text-[10px] font-mono text-neutral-500 pt-1 border-t border-dashed border-neutral-300">
         <span className="flex items-center gap-1.5">
           <Table2 className="w-3 h-3 text-[#FFC700]" />
-          Schema đã embed vào Vector Store
+          Schema embedded into Vector Store
         </span>
-        <span className="font-bold">{profile.rowCount.toLocaleString()} dòng</span>
+        <span className="font-bold">{profile.rowCount.toLocaleString()} rows</span>
       </div>
     </div>
   );

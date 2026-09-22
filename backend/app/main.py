@@ -24,7 +24,7 @@ logger.add("logs/app.log", encoding="utf-8", rotation="10 MB", retention="7 days
 app = FastAPI(
     title="Smart CSV Analyst API",
     description="RAG + Text-to-Pandas Agent for CSV data analysis",
-    version="0.1.0",
+    version="0.2.0",
     docs_url="/docs",
     redoc_url="/redoc"
 )
@@ -62,7 +62,7 @@ async def shutdown_event():
 async def root():
     return {
         "message": "Smart CSV Analyst API",
-        "version": "0.1.0",
+        "version": "0.2.0",
         "docs": "/docs"
     }
 

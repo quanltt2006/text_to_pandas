@@ -56,6 +56,14 @@ async def delete_dataset(dataset_id: str, db: AsyncSession = Depends(get_session
         embedding_store.delete_dataset(dataset_id)
     except Exception as e:
         logger.warning(f"Failed to delete embeddings: {e}")
+
+    # Delete value index
+    try:
+        from sqlalchemy import delete
+        from app.db.session import ValueIndexModel
+        await db.execute(delete(ValueIndexModel).where(ValueIndexModel.dataset_id == dataset_id))
+    except Exception as e:
+        logger.warning(f"Failed to delete value index: {e}")
     
     # Delete from database
     await db.delete(dataset)

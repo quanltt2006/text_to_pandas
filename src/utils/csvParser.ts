@@ -99,16 +99,16 @@ export function inferDatasetDescription(profile: DatasetProfile): string {
   const numericCols = profile.columns.filter(c => c.dtype === 'number');
   const stringCols = profile.columns.filter(c => c.dtype === 'string');
   
-  let desc = `Dataset chứa ${profile.rowCount.toLocaleString()} bản ghi với ${profile.columnCount} cột (${colNames}).`;
+  let desc = `This dataset contains ${profile.rowCount.toLocaleString()} records across ${profile.columnCount} columns (${colNames}).`;
   
   if (numericCols.length > 0) {
-    desc += ` Các cột số: ${numericCols.map(c => c.name).join(', ')}.`;
+    desc += ` Numeric columns: ${numericCols.map(c => c.name).join(', ')}.`;
   }
   if (stringCols.length > 0) {
-    desc += ` Các cột phân loại: ${stringCols.map(c => c.name).join(', ')}.`;
+    desc += ` Categorical columns: ${stringCols.map(c => c.name).join(', ')}.`;
   }
   
-  desc += `\n\n⚠️ Đây là mô tả suy đoán tự động. Vui lòng xác nhận hoặc bổ sung context cho từng cột.`;
+  desc += `\n\n⚠️ This is an automatically inferred description. Please confirm or add per-column context.`;
   
   return desc;
 }

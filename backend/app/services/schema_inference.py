@@ -5,36 +5,35 @@ from ..core.config import settings
 from ..models.schemas import DatasetProfile
 from .llm import LLMError
 
-SYSTEM = """Bạn là chuyên gia dữ liệu. Nhiệm vụ: dựa vào thống kê mẫu của một file CSV,
-suy đoán chủ đề của dataset và ý nghĩa của từng cột.
+SYSTEM = """You are a data expert. Task: based on the sample statistics of a CSV file,
+infer the topic of the dataset and the meaning of each column.
 
-Trả về DUY NHẤT một JSON object dạng:
+Return ONLY a JSON object shaped like:
 {
-  "dataset_description": "mô tả ngắn dataset nói về gì",
+  "dataset_description": "short description of what the dataset is about",
   "columns": {
-    "<tên cột>": {"description": "ý nghĩa cột", "category": "id|numeric|time|category|text|other"}
+    "<column name>": {"description": "column meaning", "category": "id|numeric|time|category|text|other"}
   }
 }
 
-Lưu ý:
-- Đây là SUY ĐOÁN từ dữ liệu mẫu, dùng để gợi ý cho người dùng.
-- Không bịa ra thông tin không suy luận được.
-- Tên cột có thể là tiếng Việt không dấu hoặc tiếng Anh.
+Notes:
+- This is an INFERENCE from sample data, used to guide the user.
+- Do not invent facts that cannot be inferred.
 """
 
-_USER_TEMPLATE = """File CSV được tải lên có {row_count} dòng, {col_count} cột, kích thước {size_mb:.1f}MB.
-Trạng thái profile (dựa trên {row_count} dòng):
+_USER_TEMPLATE = """The uploaded CSV file has {row_count} rows, {col_count} columns, and is {size_mb:.1f}MB.
+Profiling status (based on {row_count} rows):
 
-Dưới đây là JSON yêu cầu (đánh dấu "{{json}}") chứa thống kê từng cột
-(dtype, số giá trị unique, 5 giá trị mẫu):
+Below is the requested JSON (marked with "{{json}}") containing per-column statistics
+(dtype, number of unique values, 5 sample values):
 {json_request}
 
-Hãy phân tích và trả về JSON mô tả dataset + từng cột theo cấu trúc yêu cầu ở trên.
+Analyze it and return the JSON describing the dataset + each column per the structure above.
 """
 
 
 def _complete(system_prompt: str, user_prompt: str) -> str:
-    """Gọi LLM và trả về text phản hồi"""
+    """Call the LLM and return the text response."""
     from groq import Groq
     client = Groq(api_key=settings.GROQ_API_KEY)
     response = client.chat.completions.create(
@@ -52,11 +51,11 @@ def _complete(system_prompt: str, user_prompt: str) -> str:
 def _extract_json(text: str) -> dict:
     match = re.search(r"\{.*\}", text, flags=re.DOTALL)
     if not match:
-        raise LLMError("LLM không trả về JSON hợp lệ.")
+        raise LLMError("LLM did not return valid JSON.")
     try:
         return json.loads(match.group(0))
     except json.JSONDecodeError as exc:
-        raise LLMError(f"JSON từ LLM bị lỗi: {exc}") from exc
+        raise LLMError(f"JSON from LLM is malformed: {exc}") from exc
 
 
 def build_inference(profile: DatasetProfile) -> dict:
@@ -81,12 +80,12 @@ def build_inference(profile: DatasetProfile) -> dict:
     for col in profile.columns:
         if col.name not in columns:
             columns[col.name] = {
-                "description": "Chưa suy đoán được.",
+                "description": "Unable to infer.",
                 "category": "other",
             }
 
     return {
         "dataset_description": parsed.get("dataset_description", ""),
-        "disclaimer": "Mô tả trên là SUY ĐOÁN từ dữ liệu mẫu, vui lòng xác nhận trước khi dùng.",
+        "disclaimer": "The description above is inferred from sample data; please confirm before relying on it.",
         "columns": columns,
     }

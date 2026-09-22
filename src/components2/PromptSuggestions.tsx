@@ -19,7 +19,7 @@ export default function PromptSuggestions({ profile, onSelectSuggestion }: Promp
     {
       id: 'overview',
       badge: 'RAG',
-      query: 'Dataset này nói về gì? Tổng quan cấu trúc và ý nghĩa các cột.',
+      query: 'What is this dataset about? Overview and column meanings.',
       expectedTimeMs: '~900',
     },
     ...(firstNumeric
@@ -27,13 +27,13 @@ export default function PromptSuggestions({ profile, onSelectSuggestion }: Promp
           {
             id: 'mean',
             badge: 'PANDAS',
-            query: `Tính giá trị trung bình của cột '${firstNumeric}'`,
+            query: `Compute the average of the '${firstNumeric}' column`,
             expectedTimeMs: '~1200',
           },
           {
             id: 'top',
             badge: 'PANDAS',
-            query: `Top 10 bản ghi có giá trị '${firstNumeric}' lớn nhất`,
+            query: `Top 10 records with the highest '${firstNumeric}'`,
             expectedTimeMs: '~1400',
           },
         ]
@@ -43,7 +43,7 @@ export default function PromptSuggestions({ profile, onSelectSuggestion }: Promp
           {
             id: 'group',
             badge: 'PANDAS',
-            query: `Phân nhóm theo cột '${firstString}' và tính tổng '${firstNumeric}'`,
+            query: `Group by '${firstString}' and sum '${firstNumeric}'`,
             expectedTimeMs: '~1600',
           },
         ]
@@ -53,7 +53,7 @@ export default function PromptSuggestions({ profile, onSelectSuggestion }: Promp
           {
             id: 'dist',
             badge: 'PANDAS',
-            query: `Phân bố giá trị của cột '${firstString}' (value_counts + tỷ lệ %)`,
+            query: `Distribution of the '${firstString}' column (value_counts + %)`,
             expectedTimeMs: '~1300',
           },
         ]
@@ -61,7 +61,7 @@ export default function PromptSuggestions({ profile, onSelectSuggestion }: Promp
     {
       id: 'nulls',
       badge: 'PANDAS',
-      query: 'Đếm tổng số dòng, giá trị unique và null values của dataset',
+      query: 'Count total rows, unique values and nulls of the dataset',
       expectedTimeMs: '~1100',
     },
   ];
@@ -76,9 +76,9 @@ export default function PromptSuggestions({ profile, onSelectSuggestion }: Promp
       <div className="flex items-center justify-between pb-3 border-b-2 border-black mb-4">
         <h3 className="text-xs font-bold uppercase tracking-wider font-mono flex items-center gap-2">
           <span className="w-2.5 h-2.5 bg-black"></span>
-          GỢI Ý CÂU HỎI TRUY VẤN
+          QUERY SUGGESTIONS
         </h3>
-        <span className="text-[10px] font-mono text-neutral-500">NHẤN ĐỂ CHẠY</span>
+        <span className="text-[10px] font-mono text-neutral-500">CLICK TO RUN</span>
       </div>
 
       <div className="flex flex-col gap-3">
@@ -101,7 +101,7 @@ export default function PromptSuggestions({ profile, onSelectSuggestion }: Promp
                 </span>
                 <span className="text-[10px] text-neutral-500 flex items-center gap-1 opacity-80 group-hover:opacity-100 group-hover:text-black">
                   <Play className="w-2.5 h-2.5 fill-current" />
-                  <span>Chạy ({sug.expectedTimeMs})</span>
+                  <span>Run ({sug.expectedTimeMs})</span>
                 </span>
               </div>
               <p className="text-xs text-neutral-900 leading-snug font-sans font-medium line-clamp-2">
@@ -115,9 +115,9 @@ export default function PromptSuggestions({ profile, onSelectSuggestion }: Promp
       <div className="mt-4 pt-3 border-t border-dashed border-neutral-300 flex items-center justify-between text-[11px] font-mono text-neutral-500">
         <span className="flex items-center gap-1.5">
           <Sparkles className="w-3 h-3 text-[#FFC700] fill-[#FFC700]" />
-          Tự động sinh mã Pandas 2.2
+          Auto-generates Pandas 2.2 code
         </span>
-        <span>{suggestions.length} Mẫu sinh theo schema</span>
+        <span>{suggestions.length} suggestions from schema</span>
       </div>
     </div>
   );

@@ -20,7 +20,7 @@ export default function ExecutiveResult({ tableData, chartData, type }: Executiv
   return (
     <div className="border-2 border-black bg-[#F0ECE4] p-3.5 flex flex-col gap-3">
       <div className="flex items-center justify-between mb-1 font-mono text-[11px] font-bold uppercase">
-        <span>KẾT QUẢ THỰC THI (EXECUTION OUTPUT):</span>
+        <span>EXECUTION OUTPUT:</span>
         <span className="text-emerald-700 bg-white px-2 py-0.5 border border-black">
           {type === 'code-gen' ? 'PANDAS KERNEL OK' : 'RAG RETRIEVAL OK'}
         </span>
@@ -64,10 +64,10 @@ export default function ExecutiveResult({ tableData, chartData, type }: Executiv
               ) : (
                 <BarChart3 className="w-3 h-3" />
               )}
-              Biểu đồ {chartData.chartType}
+              Chart {chartData.chartType}
             </span>
             <span className="flex items-center gap-1 text-neutral-500">
-              <Table2 className="w-3 h-3" /> {chartData.labels.length} nhóm
+              <Table2 className="w-3 h-3" /> {chartData.labels.length} groups
             </span>
           </div>
           <div className="h-40 -mx-2">
