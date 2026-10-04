@@ -1,3 +1,4 @@
+Demo: https://text-to-pandas-8jwd.onrender.com/
 # Text-to-Pandas
 
 Ask questions in natural language, get pandas code + executed results for your CSV.
